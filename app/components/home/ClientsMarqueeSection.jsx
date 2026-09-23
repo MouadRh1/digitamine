@@ -9,25 +9,25 @@ import "swiper/css";
 import "swiper/css/free-mode";
 
 const clients = [
-  { name: "Client 1", logo: "/images/logo/agpa.jfif" },
-  { name: "Client 2", logo: "/images/logo/caes.png" },
-  { name: "Client 3", logo: "/images/logo/cmedmaroc.org.jpg" },
-  { name: "Client 4", logo: "/images/logo/conquete.png" },
-  { name: "Client 5", logo: "/images/logo/credit_agriculture.jpg" },
-  { name: "Client 6", logo: "/images/logo/eiestp.png" },
-  { name: "Client 7", logo: "/images/logo/essebar.png" },
-  { name: "Client 8", logo: "/images/logo/ifdce.png" },
-  { name: "Client 9", logo: "/images/logo/khder.png" },
-  { name: "Client 10", logo: "/images/logo/maison_ensemble.png" },
-  { name: "Client 11", logo: "/images/logo/maison-paramed.png" },
-  { name: "Client 12", logo: "/images/logo/nelga.jpg" },
-  { name: "Client 13", logo: "/images/logo/onigt.jpg" },
-  { name: "Client 14", logo: "/images/logo/opic.png" },
-  { name: "Client 15", logo: "/images/logo/qhwi.png" },
-  { name: "Client 16", logo: "/images/logo/saada_smila.jfif" },
-  { name: "Client 17", logo: "/images/logo/sup_universal.jfif" },
-  { name: "Client 18", logo: "/images/logo/udis.png" },
-  { name: "Client 19", logo: "/images/logo/workaura.png" },
+  { name: "Client 1", logo: "/images/logo/1.png" },
+  { name: "Client 2", logo: "/images/logo/2.png" },
+  { name: "Client 3", logo: "/images/logo/3.png" },
+  { name: "Client 4", logo: "/images/logo/4.png" },
+  { name: "Client 5", logo: "/images/logo/5.png" },
+  { name: "Client 6", logo: "/images/logo/6.png" },
+  { name: "Client 7", logo: "/images/logo/7.png" },
+  { name: "Client 8", logo: "/images/logo/8.png" },
+  { name: "Client 9", logo: "/images/logo/9.png" },
+  { name: "Client 10", logo: "/images/logo/10.png" },
+  { name: "Client 11", logo: "/images/logo/11.png" },
+  { name: "Client 12", logo: "/images/logo/12.png" },
+  { name: "Client 13", logo: "/images/logo/13.png" },
+  { name: "Client 14", logo: "/images/logo/14.png" },
+  { name: "Client 15", logo: "/images/logo/15.png" },
+  { name: "Client 16", logo: "/images/logo/16.png" },
+  { name: "Client 17", logo: "/images/logo/17.png" },
+  { name: "Client 18", logo: "/images/logo/18.png" },
+  { name: "Client 19", logo: "/images/logo/19.png" },
 ];
 
 export default function ClientsMarqueeSection() {
@@ -62,7 +62,7 @@ export default function ClientsMarqueeSection() {
           spaceBetween={60}
           loop
           freeMode={{ enabled: true, momentum: false }}
-          speed={6000}
+          speed={14000}
           autoplay={
             reducedMotion
               ? false
@@ -74,15 +74,14 @@ export default function ClientsMarqueeSection() {
           {clients.map((client, index) => (
             <SwiperSlide key={`${client.name}-${index}`} className="!w-auto">
               <div className="group flex items-center justify-center">
-                {/* Carte neutre derrière chaque logo : absorbe les fonds
-                    blancs/opaques des .jpg/.jfif sans flash ni rectangle brut */}
-                <div className="relative flex h-16 w-[140px] items-center justify-center rounded-sm border border-gold/10 bg-cream/[0.04] p-3 opacity-60  transition-all duration-500 group-hover:border-gold/30 group-hover:opacity-100 group-hover:grayscale-0 md:h-18 md:w-[160px]">
+                {/* Conteneur plus grand : logos 260px / 300px */}
+                <div className="relative flex h-28 w-[240px] items-center justify-center opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 md:h-32 md:w-[280px]">
                   <Image
                     src={client.logo}
                     alt={client.name}
                     fill
-                    sizes="160px"
-                    className="object-contain p-2"
+                    sizes="280px"
+                    className="object-contain"
                   />
                 </div>
               </div>
