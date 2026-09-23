@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #050505;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -10,17 +10,234 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* ⚠️ SUPPRIMÉ : --font-display: var(--font-display) → boucle infinie */
+  /* La police display est déjà injectée par next/font via `anton.variable` */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ⚠️ SUPPRIMÉ : @media (prefers-color-scheme: dark) → ton site est dark by design */
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Police display (Anton) ─── */
+.font-display {
+  font-family: var(--font-display), Arial, Helvetica, sans-serif;
+  font-weight: 400; /* Anton n'a qu'un poids — force-le pour éviter le faux-bold */
+  letter-spacing: 0.01em;
+}
+
+/* ─── Labels de section ─── */
+.section-label {
+  font-family: var(--font-display), Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: 400;    /* ↓ au lieu de 700 — Anton est déjà épais */
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #C9A227;
+}
+
+/* ─── Boutons ─── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: #C9A227;
+  color: #050505;
+  font-family: var(--font-display), Arial, Helvetica, sans-serif;
+  font-weight: 400;   /* ↓ Anton est déjà gras */
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid #C9A227;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+.btn-primary:hover {
+  background: #E6C95C;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: transparent;
+  color: #ffffff;
+  font-family: var(--font-display), Arial, Helvetica, sans-serif;
+  font-weight: 400;   /* ↓ */
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+.btn-secondary:hover {
+  border-color: #C9A227;
+  color: #C9A227;
+  transform: translateY(-2px);
+}
+
+/* ─── Liens de navigation ─── */
+.nav-link {
+  font-family: var(--font-display), Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;   /* ↓ */
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.25s ease;
+}
+.nav-link:hover {
+  color: #ffffff;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: #C9A227;
+  transition: width 0.25s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+.nav-link.active {
+  color: #C9A227;
+}
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* ─── Filtres catégorie ─── */
+.category-filter {
+  font-family: var(--font-display), Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;   /* ↓ */
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(201, 162, 39, 0.15);
+  background: transparent;
+  transition: all 0.25s ease;
+}
+.category-filter:hover {
+  color: #ffffff;
+  border-color: rgba(201, 162, 39, 0.4);
+}
+.category-filter.active {
+  color: #050505;
+  background: #C9A227;
+  border-color: #C9A227;
+}
+
+/* ─── Effet glow ─── */
+.gold-text-glow {
+  text-shadow: 0 0 40px rgba(201, 162, 39, 0.35);
+}
+
+/* ─── Lignes de service ─── */
+.service-row {
+  border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+  transition: background-color 0.25s ease, padding-left 0.25s ease;
+}
+.service-row:hover {
+  background: rgba(201, 162, 39, 0.03);
+  padding-left: 8px;
+}
+
+/* ─── Cartes portfolio ─── */
+.portfolio-card {
+  overflow: hidden;
+}
+.portfolio-card img {
+  transition: transform 0.5s ease;
+}
+.portfolio-card:hover img {
+  transform: scale(1.05);
+}
+
+/* ─── Animations GoldGeometry ─── */
+@keyframes slow-rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.animate-slow-rotate {
+  animation: slow-rotate 40s linear infinite;
+}
+
+@keyframes slow-rotate-rev {
+  from { transform: translate(-50%, -50%) rotate(360deg); }
+  to   { transform: translate(-50%, -50%) rotate(0deg); }
+}
+.animate-slow-rotate-rev {
+  animation: slow-rotate-rev 32s linear infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.08); }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* ─── Séparateur doré ─── */
+.gold-line {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.3) 50%, transparent);
+}
+
+/* ─── Champs de formulaire ─── */
+.form-input {
+  width: 100%;
+  background: rgba(201, 162, 39, 0.02);
+  border: 1px solid rgba(201, 162, 39, 0.15);
+  color: #ffffff;
+  font-size: 14px;
+  padding: 14px 16px;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+.form-input::placeholder {
+  color: rgba(160, 160, 160, 0.4);
+}
+.form-input:focus {
+  outline: none;
+  border-color: #C9A227;
+  background: rgba(201, 162, 39, 0.05);
+}
+select.form-input {
+  appearance: none;
+  cursor: pointer;
+}
+select.form-input option {
+  background: #0a0a0a;
+  color: #ffffff;
+}
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.06); }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 5s ease-in-out infinite;
 }
