@@ -12,6 +12,7 @@ import PrinciplesSection from "./components/home/PrinciplesSection";
 import ProcessSection from "./components/home/ProcessSection";
 import AboutPreviewSection from "./components/home/AboutPreviewSection";
 import FinalCTASection from "./components/home/FinalCTASection";
+import ClientsMarqueeSection from "./components/home/ClientsMarqueeSection";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <AgenceHumaineSection/>
       <ExpertisesSection/>
       <PrincipesSection/>
+      <ClientsMarqueeSection/>
       <RealisationsSection/>
       {/* <ServicesSection />
       <PortfolioSection />

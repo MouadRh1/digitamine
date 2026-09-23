@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function AgenceHumaineSection() {
   return (
-    <section className="relative bg-[#050505]">
+    <section className="relative bg-[#141414] border-t border-b border-[rgba(201,162,39,0.08)]">
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {/* ─── Colonne gauche : photo ─── */}
         <div className="relative w-full aspect-[4/3] lg:aspect-auto lg:min-h-[440px] xl:min-h-[500px]">
@@ -15,6 +15,8 @@ export default function AgenceHumaineSection() {
             className="object-cover object-center"
             priority
           />
+          {/* Léger voile sombre pour harmoniser avec le fond gris */}
+          <div className="absolute inset-0 bg-[#050505]/15" />
         </div>
 
         {/* ─── Colonne droite : contenu ─── */}

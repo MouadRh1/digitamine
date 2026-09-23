@@ -241,3 +241,7 @@ select.form-input option {
 .animate-pulse-glow {
   animation: pulse-glow 5s ease-in-out infinite;
 }
+/* ─── Swiper : défilement linéaire continu ─── */
+.clients-swiper .swiper-wrapper {
+  transition-timing-function: linear !important;
+}
