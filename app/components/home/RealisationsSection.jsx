@@ -1,17 +1,21 @@
 import Link from "next/link";
 import Image from "next/image";
+import VideoCard from "./VideoCard";
 
 const realisations = [
   {
     id: 1,
-    title: "IFDCE",
+    title: "Stratégie SMMA",
     cat: "STRATÉGIE · CONTENU · CAMPAGNE",
     desc: "Structurer la communication d'un institut autour de ses objectifs d'inscription.",
-    variant: "gold",
+    video: "/videos/smma-strategy.mp4",
+    poster: "/images/expertises/SMMA.png",
+    variant: "video",
+    // badge: "Reels",
   },
   {
     id: 2,
-    title: "Direction de tournage",
+    title: "Couverture média",
     cat: "PRODUCTION AUDIOVISUELLE",
     desc: null,
     img: "/images/equipe-digitamine.png",
@@ -19,10 +23,13 @@ const realisations = [
   },
   {
     id: 3,
-    title: "Workaura",
+    title: "Site web",
     cat: "SITE WEB · PARCOURS CLIENT",
     desc: "Présenter les espaces et faciliter la découverte avant la première visite.",
-    variant: "dark",
+    video: "/videos/siteweb.mp4",
+    poster: "/images/expertises/SITEWEB.png",
+    variant: "video",
+    // badge: "Motion",
   },
 ];
 
@@ -30,11 +37,15 @@ export default function RealisationsSection() {
   return (
     <section className="relative bg-[#EDEAE3] py-16 md:py-20 lg:py-24">
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        {/* Header : label gauche + titre gauche */}
+        {/* Header : label unifié + titre gauche */}
         <div className="mb-10 md:mb-14">
-          <p className="font-display text-[11px] md:text-[12px] tracking-[0.22em] uppercase text-[#C9A227] mb-5 md:mb-7">
-            Réalisations
-          </p>
+          <div className="flex items-center gap-3 mb-6 md:mb-8">
+            <div className="w-10 h-[1px] bg-[#C9A227]" />
+            <p className="font-display text-[14px] md:text-[16px] tracking-[0.22em] uppercase text-[#C9A227]">
+              Services
+            </p>
+          </div>
+
           <h2
             className="font-display tracking-[-0.02em] text-[#0a0a0a]"
             style={{
@@ -45,50 +56,50 @@ export default function RealisationsSection() {
           >
             Notre travail,
             <br />
-            dans son contexte.
+            <span>
+              dans son{" "}
+              <span
+                style={{
+                  color: "#9c9c9c",
+                  WebkitTextStroke: "1px #C9A227",
+                }}
+              >
+                contexte
+              </span>
+              .
+            </span>
           </h2>
         </div>
 
         {/* Grille 3 colonnes */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
           {realisations.map((item) => {
-            // Card dorée
-            if (item.variant === "gold") {
+            // ═══════════════════════════════════════════
+            // Card VIDÉO (Stratégie SMMA + Site web)
+            // ═══════════════════════════════════════════
+            if (item.variant === "video") {
               return (
-                <Link
+                <VideoCard
                   key={item.id}
-                  href={`/portfolio/${item.id}`}
-                  className="group relative flex flex-col justify-end aspect-[4/5] p-6 md:p-7 bg-[#C9A227] hover:bg-[#D4AF37] transition-all duration-500 overflow-hidden"
-                >
-                  <p className="font-display text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[#050505]/70 mb-4">
-                    {item.cat}
-                  </p>
-                  <h3
-                    className="font-display tracking-tight text-[#050505] mb-4"
-                    style={{ fontSize: "clamp(24px, 2.4vw, 34px)", fontWeight: 400, lineHeight: 1.1 }}
-                  >
-                    {item.title}
-                  </h3>
-                  <p className="text-[13px] md:text-[14px] leading-relaxed text-[#050505]/80 max-w-[320px]">
-                    {item.desc}
-                  </p>
-
-                  {/* Flèche en haut à droite */}
-                  <span className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center border border-[#050505]/20 group-hover:border-[#050505]/60 group-hover:bg-[#050505]/5 transition-all duration-300">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M2 10L10 2M10 2H5M10 2V7" stroke="#050505" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </span>
-                </Link>
+                  href="/services"
+                  videoSrc={item.video}
+                  poster={item.poster}
+                //   badge={item.badge}
+                  category={item.cat}
+                  title={item.title}
+                  desc={item.desc}
+                />
               );
             }
 
-            // Card image
+            // ═══════════════════════════════════════════
+            // Card IMAGE (Couverture média)
+            // ═══════════════════════════════════════════
             if (item.variant === "image") {
               return (
                 <Link
                   key={item.id}
-                  href={`/portfolio/${item.id}`}
+                  href="/services"
                   className="group relative flex flex-col justify-end aspect-[4/5] overflow-hidden"
                 >
                   <Image
@@ -98,17 +109,19 @@ export default function RealisationsSection() {
                     sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  {/* Overlay dégradé bas */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[rgba(5,5,5,0.9)] via-[rgba(5,5,5,0.3)] to-transparent" />
 
-                  {/* Contenu */}
                   <div className="relative z-10 p-6 md:p-7">
                     <p className="font-display text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[#C9A227] mb-3">
                       {item.cat}
                     </p>
                     <h3
                       className="font-display tracking-tight text-white"
-                      style={{ fontSize: "clamp(20px, 2vw, 28px)", fontWeight: 400, lineHeight: 1.1 }}
+                      style={{
+                        fontSize: "clamp(20px, 2vw, 28px)",
+                        fontWeight: 400,
+                        lineHeight: 1.1,
+                      }}
                     >
                       {item.title}
                     </h3>
@@ -117,47 +130,20 @@ export default function RealisationsSection() {
               );
             }
 
-            // Card sombre
-            return (
-              <Link
-                key={item.id}
-                href={`/portfolio/${item.id}`}
-                className="group relative flex flex-col justify-end aspect-[4/5] p-6 md:p-7 bg-[#0a0a0a] hover:bg-[#151515] transition-all duration-500 overflow-hidden"
-              >
-                <p className="font-display text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[#C9A227] mb-4">
-                  {item.cat}
-                </p>
-                <h3
-                  className="font-display tracking-tight text-white mb-4"
-                  style={{ fontSize: "clamp(24px, 2.4vw, 34px)", fontWeight: 400, lineHeight: 1.1 }}
-                >
-                  {item.title}
-                </h3>
-                <p className="text-[13px] md:text-[14px] leading-relaxed text-[#A0A0A0] max-w-[320px]">
-                  {item.desc}
-                </p>
-
-                <span className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center border border-[rgba(201,162,39,0.3)] group-hover:border-[#C9A227] group-hover:bg-[rgba(201,162,39,0.08)] transition-all duration-300">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path d="M2 10L10 2M10 2H5M10 2V7" stroke="#C9A227" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
-              </Link>
-            );
+            // Fallback (au cas où)
+            return null;
           })}
         </div>
 
-        {/* Bouton "Voir les réalisations" — NOUVEAU DESIGN */}
+        {/* Bouton "Voir tous les services" */}
         <div className="flex items-center">
           <Link
-            href="/portfolio"
+            href="/services"
             className="group relative inline-flex items-center gap-3 font-display text-[12px] md:text-[13px] tracking-[0.18em] uppercase text-[#0a0a0a] font-medium px-8 py-4 border-2 border-[#0a0a0a] overflow-hidden transition-colors duration-500 hover:text-[#EDEAE3]"
           >
-            {/* Fond doré qui glisse au hover */}
             <span className="absolute inset-0 bg-[#0a0a0a] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" />
 
-            {/* Contenu (au-dessus du fond animé) */}
-            <span className="relative z-10">Voir les réalisations</span>
+            <span className="relative z-10">Voir tous les services</span>
             <svg
               width="14"
               height="14"

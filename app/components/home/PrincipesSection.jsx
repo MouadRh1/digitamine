@@ -66,10 +66,10 @@ export default function PrincipesSection() {
         {/* Header */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mb-14 md:mb-20">
           <div className="lg:col-span-3">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-[1px] bg-[#C9A227]" />
-              <p className="font-display text-[11px] md:text-[12px] tracking-[0.22em] uppercase text-[#C9A227]">
-                Nos principes
+            <div className="flex items-center gap-3 mb-6 md:mb-8">
+              <div className="w-10 h-[1px] bg-[#C9A227]" />
+              <p className="font-display text-[14px] md:text-[16px] tracking-[0.22em] uppercase text-[#C9A227]">
+                Nos PRINCIPES
               </p>
             </div>
           </div>
@@ -90,12 +90,12 @@ export default function PrincipesSection() {
           </div>
         </div>
 
-        {/* Grille 3x2 des principes */}
+        {/* Grille 3x2 des principes — cards plus compactes */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {principes.map((p) => (
             <article
               key={p.num}
-              className="group relative overflow-hidden bg-[#0d0d0d] border border-[rgba(201,162,39,0.15)] hover:border-[rgba(201,162,39,0.5)] transition-all duration-500 p-6 md:p-7 lg:p-8 min-h-[300px] md:min-h-[340px] flex flex-col justify-between cursor-pointer"
+              className="group relative overflow-hidden bg-[#0d0d0d] border border-[rgba(201,162,39,0.15)] hover:border-[rgba(201,162,39,0.5)] transition-all duration-500 p-5 md:p-6 min-h-[220px] md:min-h-[250px] flex flex-col justify-between cursor-pointer"
             >
               {/* Halo doré intérieur */}
               <div
@@ -110,22 +110,22 @@ export default function PrincipesSection() {
                 <span className="font-display text-[12px] md:text-[13px] tracking-widest text-[#C9A227]">
                   {p.num}
                 </span>
-                <span className="font-display text-[9px] md:text-[10px] tracking-[0.2em] uppercase text-[#C9A227]/70 group-hover:text-[#C9A227] transition-colors duration-300 border border-[rgba(201,162,39,0.25)] px-2.5 py-1">
+                <span className="font-display text-[9px] md:text-[10px] tracking-[0.2em] uppercase text-[#C9A227]/70 group-hover:text-[#C9A227] transition-colors duration-300 border border-[rgba(201,162,39,0.25)] px-2 py-0.5">
                   {p.tag}
                 </span>
               </div>
 
               {/* Icône 3D au centre */}
-              <div className="relative z-10 flex-1 flex items-center justify-center py-6">
-                <div className="relative w-[80px] h-[80px] flex items-center justify-center">
+              <div className="relative z-10 flex-1 flex items-center justify-center py-4">
+                <div className="relative w-[60px] h-[60px] flex items-center justify-center">
                   {/* Cercles concentriques animés */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span className="absolute w-[70px] h-[70px] rounded-full border border-[rgba(201,162,39,0.2)] group-hover:border-[rgba(201,162,39,0.5)] transition-colors duration-500" />
-                    <span className="absolute w-[90px] h-[90px] rounded-full border border-[rgba(201,162,39,0.1)] group-hover:border-[rgba(201,162,39,0.3)] transition-colors duration-700" />
+                    <span className="absolute w-[52px] h-[52px] rounded-full border border-[rgba(201,162,39,0.2)] group-hover:border-[rgba(201,162,39,0.5)] transition-colors duration-500" />
+                    <span className="absolute w-[68px] h-[68px] rounded-full border border-[rgba(201,162,39,0.1)] group-hover:border-[rgba(201,162,39,0.3)] transition-colors duration-700" />
                   </div>
 
                   {/* Composant 3D (client-only) */}
-                  <SVG3DIcon svg={p.svgPath} size={70} />
+                  <SVG3DIcon svg={p.svgPath} size={52} />
                 </div>
               </div>
 
@@ -134,7 +134,7 @@ export default function PrincipesSection() {
                 <h3
                   className="font-display tracking-tight text-white group-hover:text-[#C9A227] transition-colors duration-500"
                   style={{
-                    fontSize: "clamp(16px, 1.5vw, 22px)",
+                    fontSize: "clamp(14px, 1.3vw, 18px)",
                     fontWeight: 500,
                     lineHeight: 1.2,
                   }}
