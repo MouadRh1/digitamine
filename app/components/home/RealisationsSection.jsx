@@ -62,12 +62,10 @@ export default function RealisationsSection() {
               <span
                 style={{
                   color: "#9c9c9c",
-                  WebkitTextStroke: "1px #C9A227",
                 }}
               >
-                contexte
+                contexte.
               </span>
-              .
             </span>
           </h2>
         </div>

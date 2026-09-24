@@ -54,22 +54,16 @@ export default function HeroSection() {
           CONTENU PRINCIPAL
           ═══════════════════════════════════════════ */}
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10 w-full pt-[72px] pb-[120px]">
-        {/* Label + numéro en haut */}
-        <div className="absolute top-[100px] md:top-[112px] left-6 md:left-10 right-6 md:right-10 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-[1px] bg-[#C9A227]" />
-            <span className="font-display text-[11px] tracking-[0.22em] uppercase text-[#C9A227]">
-              Agence digitale · Maroc
-            </span>
-          </div>
-          <span className="font-display text-[11px] tracking-[0.22em] uppercase text-white/40 hidden md:block">
+        {/* Numéro en haut à droite */}
+        <div className="absolute top-[100px] md:top-[112px] left-6 md:left-10 right-6 md:right-10 flex items-center justify-end">
+          <span className="font-display text-[11px] tracking-[0.22em] uppercase text-white/40">
             01 / ACCUEIL
           </span>
         </div>
 
         {/* Contenu centré verticalement — hauteur ajustée */}
         <div className="flex flex-col justify-center h-[calc(100vh-72px-120px)] min-h-[400px] pt-16">
-          {/* Titre principal — taille réduite pour tenir dans 100vh */}
+          {/* Titre principal */}
           <h1
             className="font-display tracking-[-0.03em] text-white mb-6 md:mb-8 max-w-[1100px]"
             style={{

@@ -10,7 +10,7 @@ export default function DepartPointSection() {
           </p>
         </div>
 
-        {/* Titre principal */}
+        {/* Titre principal — taille réduite */}
         <h2
           className="font-display tracking-[-0.02em] mb-10 md:mb-14 max-w-[1300px]"
           style={{
@@ -21,14 +21,7 @@ export default function DepartPointSection() {
           }}
         >
           Votre entreprise n&apos;a pas besoin de faire{" "}
-          <span
-            className="text-[#9c9c9c]"
-            style={{
-              WebkitTextStroke: "1px #C9A227",
-            }}
-          >
-            plus de digital.
-          </span>
+          <span className="text-[#9c9c9c]">plus de digital.</span>
           <br />
           Elle a besoin de mieux le structurer.
         </h2>
