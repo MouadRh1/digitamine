@@ -6,13 +6,14 @@ export default function AgenceHumaineSection() {
     <section className="relative bg-[#141414] border-t border-b border-[rgba(201,162,39,0.08)]">
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {/* ─── Colonne gauche : photo ─── */}
-        <div className="relative w-full aspect-[4/3] lg:aspect-auto lg:min-h-[440px] xl:min-h-[500px]">
+        <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:min-h-[560px] xl:min-h-[640px] lg:h-full overflow-hidden">
           <Image
             src="/images/humaine.jpeg"
             alt="Une agence humaine — équipe Digitamine"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover object-top"
+            className="object-cover"
+            style={{ objectPosition: "50% 22%" }}
             priority
           />
           {/* Léger voile sombre pour harmoniser avec le fond gris */}
@@ -45,9 +46,9 @@ export default function AgenceHumaineSection() {
 
             {/* Paragraphe */}
             <p className="text-[13px] md:text-[14px] leading-relaxed text-[#A0A0A0] mb-3 md:mb-4 max-w-[540px]">
-              Stratégie, design, développement, vidéo et publicité collaborent dès le
-              départ. Derrière chaque livrable, il y a des échanges, des choix et une
-              équipe réellement impliquée.
+              Stratégie, design, développement, vidéo et publicité collaborent
+              dès le départ. Derrière chaque livrable, il y a des échanges, des
+              choix et une équipe réellement impliquée.
             </p>
 
             {/* Lien "Rencontrer l'équipe ↗" */}
