@@ -3,10 +3,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, FreeMode } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 
 import "swiper/css";
-import "swiper/css/free-mode";
 
 const clients = [
   { name: "Client 1", logo: "/images/logo/1.png" },
@@ -59,11 +58,11 @@ export default function ClientsMarqueeSection() {
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-black to-transparent md:w-40" />
 
         <Swiper
-          modules={[Autoplay, FreeMode]}
+          modules={[Autoplay]}
           slidesPerView="auto"
           spaceBetween={60}
           loop
-          freeMode={{ enabled: true, momentum: false }}
+          loopAdditionalSlides={clients.length}
           speed={14000}
           autoplay={
             reducedMotion

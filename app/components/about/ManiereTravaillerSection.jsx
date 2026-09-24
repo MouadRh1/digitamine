@@ -9,7 +9,7 @@ export default function ManiereTravaillerSection() {
         {/* ─── Colonne gauche : photo ─── */}
         <div className="relative w-full aspect-[4/3] lg:aspect-auto lg:min-h-[520px] xl:min-h-[600px] overflow-hidden">
           <Image
-            src="/images/travailler.jpg"
+            src="/images/maniere_travaille.png"
             alt="Notre manière de travailler chez Digitamine"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"

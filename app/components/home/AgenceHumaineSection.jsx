@@ -8,7 +8,7 @@ export default function AgenceHumaineSection() {
         {/* ─── Colonne gauche : photo ─── */}
         <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:min-h-[560px] xl:min-h-[640px] lg:h-full overflow-hidden">
           <Image
-            src="/images/humaine.jpeg"
+            src="/images/equipe/humaine.jpeg"
             alt="Une agence humaine — équipe Digitamine"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
