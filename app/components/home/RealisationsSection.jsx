@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import VideoCard from "./VideoCard";
@@ -11,7 +14,6 @@ const realisations = [
     video: "/videos/smma-strategy.mp4",
     poster: "/images/poster/hidaya.png",
     variant: "video",
-    // badge: "Reels",
   },
   {
     id: 2,
@@ -30,23 +32,132 @@ const realisations = [
     video: "/videos/siteweb.mp4",
     poster: "/images/poster/siteweb.png",
     variant: "video",
-    // badge: "Motion",
   },
 ];
+
+// ═══════════════════════════════════════════
+// HOOK : Détecte l'entrée dans le viewport
+// ═══════════════════════════════════════════
+function useInView(options = {}) {
+  const [isInView, setIsInView] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mediaQuery.matches) {
+      setIsInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15, ...options }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, isInView];
+}
+
+// ═══════════════════════════════════════════
+// RevealMask : contenu qui sort de sous un masque
+// ═══════════════════════════════════════════
+function RevealMask({ children, delay = 0, duration = 1000 }) {
+  const [ref, isInView] = useInView();
+
+  return (
+    <div ref={ref} className="overflow-hidden">
+      <div
+        className="transition-transform ease-[cubic-bezier(0.65,0,0.35,1)]"
+        style={{
+          transitionDuration: `${duration}ms`,
+          transitionDelay: `${delay}ms`,
+          transform: isInView ? "translateY(0%)" : "translateY(110%)",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════
+// RevealCard : fade + slide + scale (pour les cards)
+// ═══════════════════════════════════════════
+function RevealCard({ children, delay = 0, duration = 1000 }) {
+  const [ref, isInView] = useInView({ threshold: 0.1 });
+
+  return (
+    <div
+      ref={ref}
+      className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)] h-full"
+      style={{
+        transitionDuration: `${duration}ms`,
+        transitionDelay: `${delay}ms`,
+        opacity: isInView ? 1 : 0,
+        transform: isInView
+          ? "translateY(0) scale(1)"
+          : "translateY(40px) scale(0.96)",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════
+// RevealFade : fade simple (pour le bouton)
+// ═══════════════════════════════════════════
+function RevealFade({ children, delay = 0, duration = 900 }) {
+  const [ref, isInView] = useInView();
+
+  return (
+    <div
+      ref={ref}
+      className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
+      style={{
+        transitionDuration: `${duration}ms`,
+        transitionDelay: `${delay}ms`,
+        opacity: isInView ? 1 : 0,
+        transform: isInView ? "translateY(0)" : "translateY(20px)",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
 export default function RealisationsSection() {
   return (
     <section className="relative bg-[#EDEAE3] py-16 md:py-20 lg:py-24">
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        {/* Header : label unifié + titre gauche */}
+        {/* ═══════════════════════════════════════════
+            HEADER ANIMÉ
+            ═══════════════════════════════════════════ */}
         <div className="mb-10 md:mb-14">
-          <div className="flex items-center gap-3 mb-6 md:mb-8">
-            <div className="w-10 h-[1px] bg-[#C9A227]" />
-            <p className="font-display text-[14px] md:text-[16px] tracking-[0.22em] uppercase text-[#C9A227]">
-              Services
-            </p>
+          {/* Label avec masque */}
+          <div className="mb-6 md:mb-8">
+            <RevealMask delay={0} duration={900}>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-[1px] bg-[#C9A227]" />
+                <p className="font-display text-[14px] md:text-[16px] tracking-[0.22em] uppercase text-[#C9A227]">
+                  Services
+                </p>
+              </div>
+            </RevealMask>
           </div>
 
+          {/* Titre — 2 lignes en cascade */}
           <h2
             className="font-display tracking-[-0.02em] text-[#0a0a0a]"
             style={{
@@ -55,111 +166,119 @@ export default function RealisationsSection() {
               fontWeight: 400,
             }}
           >
-            Notre travail,
-            <br />
-            <span>
-              dans son{" "}
-              <span
-                style={{
-                  color: "#9c9c9c",
-                }}
-              >
-                contexte.
+            <RevealMask delay={150} duration={1000}>
+              <span className="block">Notre travail,</span>
+            </RevealMask>
+            <RevealMask delay={300} duration={1000}>
+              <span className="block">
+                dans son{" "}
+                <span style={{ color: "#9c9c9c" }}>contexte.</span>
               </span>
-            </span>
+            </RevealMask>
           </h2>
         </div>
 
-        {/* Grille 3 colonnes */}
+        {/* ═══════════════════════════════════════════
+            GRILLE : cards avec animation en cascade
+            ═══════════════════════════════════════════ */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
-          {realisations.map((item) => {
-            // ═══════════════════════════════════════════
-            // Card VIDÉO (Stratégie SMMA + Site web)
-            // ═══════════════════════════════════════════
+          {realisations.map((item, index) => {
+            // ═══ Card VIDÉO ═══
             if (item.variant === "video") {
               return (
-                <VideoCard
+                <RevealCard
                   key={item.id}
-                  href="/services"
-                  videoSrc={item.video}
-                  poster={item.poster}
-                //   badge={item.badge}
-                  category={item.cat}
-                  title={item.title}
-                  desc={item.desc}
-                />
+                  delay={500 + index * 150}
+                  duration={1000}
+                >
+                  <VideoCard
+                    href="/services"
+                    videoSrc={item.video}
+                    poster={item.poster}
+                    badge={item.badge}
+                    category={item.cat}
+                    title={item.title}
+                    desc={item.desc}
+                  />
+                </RevealCard>
               );
             }
 
-            // ═══════════════════════════════════════════
-            // Card IMAGE (Couverture média)
-            // ═══════════════════════════════════════════
+            // ═══ Card IMAGE ═══
             if (item.variant === "image") {
               return (
-                <Link
+                <RevealCard
                   key={item.id}
-                  href="/services"
-                  className="group relative flex flex-col justify-end aspect-[4/5] overflow-hidden"
+                  delay={500 + index * 150}
+                  duration={1000}
                 >
-                  <Image
-                    src={item.img}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[rgba(5,5,5,0.9)] via-[rgba(5,5,5,0.3)] to-transparent" />
+                  <Link
+                    href="/services"
+                    className="group relative flex flex-col justify-end aspect-[4/5] overflow-hidden"
+                  >
+                    <Image
+                      src={item.img}
+                      alt={item.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[rgba(5,5,5,0.9)] via-[rgba(5,5,5,0.3)] to-transparent" />
 
-                  <div className="relative z-10 p-6 md:p-7">
-                    <p className="font-display text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[#C9A227] mb-3">
-                      {item.cat}
-                    </p>
-                    <h3
-                      className="font-display tracking-tight text-white"
-                      style={{
-                        fontSize: "clamp(20px, 2vw, 28px)",
-                        fontWeight: 400,
-                        lineHeight: 1.1,
-                      }}
-                    >
-                      {item.title}
-                    </h3>
-                  </div>
-                </Link>
+                    <div className="relative z-10 p-6 md:p-7">
+                      <p className="font-display text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[#C9A227] mb-3">
+                        {item.cat}
+                      </p>
+                      <h3
+                        className="font-display tracking-tight text-white"
+                        style={{
+                          fontSize: "clamp(20px, 2vw, 28px)",
+                          fontWeight: 400,
+                          lineHeight: 1.1,
+                        }}
+                      >
+                        {item.title}
+                      </h3>
+                    </div>
+                  </Link>
+                </RevealCard>
               );
             }
 
-            // Fallback (au cas où)
             return null;
           })}
         </div>
 
-        {/* Bouton "Voir tous les services" */}
-        <div className="flex items-center">
-          <Link
-            href="/services"
-            className="group relative inline-flex items-center gap-3 font-display text-[12px] md:text-[13px] tracking-[0.18em] uppercase text-[#0a0a0a] font-medium px-8 py-4 border-2 border-[#0a0a0a] overflow-hidden transition-colors duration-500 hover:text-[#EDEAE3]"
-          >
-            <span className="absolute inset-0 bg-[#0a0a0a] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" />
-
-            <span className="relative z-10">Voir tous les services</span>
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              className="relative z-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"
+        {/* ═══════════════════════════════════════════
+            BOUTON avec fade
+            ═══════════════════════════════════════════ */}
+        <RevealFade delay={1000} duration={900}>
+          <div className="flex items-center">
+            <Link
+              href="/services"
+              className="group relative inline-flex items-center gap-3 font-display text-[12px] md:text-[13px] tracking-[0.18em] uppercase text-[#0a0a0a] font-medium px-8 py-4 border-2 border-[#0a0a0a] overflow-hidden transition-colors duration-500 hover:text-[#EDEAE3]"
             >
-              <path
-                d="M2 12L12 2M12 2H5M12 2V9"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
-        </div>
+              <span className="absolute inset-0 bg-[#0a0a0a] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" />
+
+              <span className="relative z-10">Voir tous les services</span>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                className="relative z-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"
+              >
+                <path
+                  d="M2 12L12 2M12 2H5M12 2V9"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
+          </div>
+        </RevealFade>
       </div>
     </section>
   );

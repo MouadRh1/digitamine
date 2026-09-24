@@ -42,7 +42,7 @@ export default function ClientsMarqueeSection() {
 
   return (
     <section className="clients-marquee relative overflow-hidden border-t border-b border-[rgba(201,162,39,0.1)] bg-black py-20 md:py-28 lg:py-32">
-      {/* Label supérieur — même style que "Le point de départ" */}
+      {/* Label supérieur */}
       <div className="mx-auto mb-10 max-w-[1400px] px-6 md:px-10 md:mb-14">
         <div className="flex items-center gap-3 mb-6 md:mb-8">
           <div className="w-10 h-[1px] bg-[#C9A227]" />
@@ -60,10 +60,10 @@ export default function ClientsMarqueeSection() {
         <Swiper
           modules={[Autoplay]}
           slidesPerView="auto"
-          spaceBetween={60}
+          spaceBetween={3}
           loop
           loopAdditionalSlides={clients.length}
-          speed={14000}
+          speed={5000}
           autoplay={
             reducedMotion
               ? false
@@ -75,13 +75,13 @@ export default function ClientsMarqueeSection() {
           {clients.map((client, index) => (
             <SwiperSlide key={`${client.name}-${index}`} className="!w-auto">
               <div className="group flex items-center justify-center">
-                {/* Conteneur agrandi : logos 320px / 380px */}
-                <div className="relative flex h-36 w-[300px] items-center justify-center opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 md:h-44 md:w-[360px]">
+                {/* Conteneur agrandi : logos 400px / 480px */}
+                <div className="relative flex h-44 w-[280px] items-center justify-center opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 md:h-52 md:w-[460px]">
                   <Image
                     src={client.logo}
                     alt={client.name}
                     fill
-                    sizes="360px"
+                    sizes="460px"
                     className="object-contain"
                   />
                 </div>

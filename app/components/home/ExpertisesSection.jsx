@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -81,6 +84,109 @@ const expertises = [
   },
 ];
 
+// ═══════════════════════════════════════════
+// HOOK : Détecte l'entrée dans le viewport
+// ═══════════════════════════════════════════
+function useInView(options = {}) {
+  const [isInView, setIsInView] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    // Support `prefers-reduced-motion`
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mediaQuery.matches) {
+      setIsInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15, ...options }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, isInView];
+}
+
+// ═══════════════════════════════════════════
+// RevealMask : contenu qui sort de sous un masque
+// ═══════════════════════════════════════════
+function RevealMask({ children, delay = 0, duration = 1000 }) {
+  const [ref, isInView] = useInView();
+
+  return (
+    <div ref={ref} className="overflow-hidden">
+      <div
+        className="transition-transform ease-[cubic-bezier(0.65,0,0.35,1)]"
+        style={{
+          transitionDuration: `${duration}ms`,
+          transitionDelay: `${delay}ms`,
+          transform: isInView ? "translateY(0%)" : "translateY(110%)",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════
+// RevealFade : fade + slide up
+// ═══════════════════════════════════════════
+function RevealFade({ children, delay = 0, duration = 900 }) {
+  const [ref, isInView] = useInView();
+
+  return (
+    <div
+      ref={ref}
+      className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
+      style={{
+        transitionDuration: `${duration}ms`,
+        transitionDelay: `${delay}ms`,
+        opacity: isInView ? 1 : 0,
+        transform: isInView ? "translateY(0)" : "translateY(30px)",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════
+// RevealCard : animation dédiée aux cards (fade + scale + slide)
+// ═══════════════════════════════════════════
+function RevealCard({ children, delay = 0, duration = 1000 }) {
+  const [ref, isInView] = useInView({ threshold: 0.1 });
+
+  return (
+    <div
+      ref={ref}
+      className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)] h-full"
+      style={{
+        transitionDuration: `${duration}ms`,
+        transitionDelay: `${delay}ms`,
+        opacity: isInView ? 1 : 0,
+        transform: isInView
+          ? "translateY(0) scale(1)"
+          : "translateY(40px) scale(0.96)",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function ExpertisesSection() {
   return (
     <section className="relative bg-[#050505] py-16 md:py-20 lg:py-24 overflow-hidden">
@@ -93,17 +199,25 @@ export default function ExpertisesSection() {
       />
 
       <div className="relative max-w-[1400px] mx-auto px-6 md:px-10">
-        {/* ─── Header ─── */}
+        {/* ═══════════════════════════════════════════
+            HEADER ANIMÉ
+            ═══════════════════════════════════════════ */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mb-12 md:mb-16">
+          {/* Label */}
           <div className="lg:col-span-3">
-            <div className="flex items-center gap-3 mb-6 md:mb-8">
-              <div className="w-10 h-[1px] bg-[#C9A227]" />
-              <p className="font-display text-[14px] md:text-[16px] tracking-[0.22em] uppercase text-[#C9A227]">
-                Nos expertises
-              </p>
+            <div className="mb-6 md:mb-8">
+              <RevealMask delay={0} duration={900}>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-[1px] bg-[#C9A227]" />
+                  <p className="font-display text-[14px] md:text-[16px] tracking-[0.22em] uppercase text-[#C9A227]">
+                    Nos expertises
+                  </p>
+                </div>
+              </RevealMask>
             </div>
           </div>
 
+          {/* Titre — 3 lignes en cascade */}
           <div className="lg:col-span-6 lg:text-left">
             <h2
               className="font-display tracking-[-0.02em] text-white"
@@ -113,120 +227,124 @@ export default function ExpertisesSection() {
                 fontWeight: 400,
               }}
             >
-              Les bons leviers.
-              <br />
-              Connectés
-              <br />
-              intelligemment.
+              <RevealMask delay={150} duration={1000}>
+                <span className="block">Les bons leviers.</span>
+              </RevealMask>
+              <RevealMask delay={300} duration={1000}>
+                <span className="block">Connectés</span>
+              </RevealMask>
+              <RevealMask delay={450} duration={1000}>
+                <span className="block">intelligemment.</span>
+              </RevealMask>
             </h2>
           </div>
 
+          {/* Lien "Explorer tous les services" */}
           <div className="lg:col-span-3 flex lg:justify-end items-start">
-            <Link
-              href="/services"
-              className="font-display text-[12px] md:text-[13px] tracking-[0.08em] uppercase text-[#C9A227] hover:text-[#E6C95C] transition-colors duration-200 inline-flex items-center gap-2 group"
-            >
-              Explorer tous les services
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 12 12"
-                fill="none"
-                className="group-hover:translate-x-[2px] group-hover:-translate-y-[2px] transition-transform duration-200"
+            <RevealFade delay={600} duration={900}>
+              <Link
+                href="/services"
+                className="font-display text-[12px] md:text-[13px] tracking-[0.08em] uppercase text-[#C9A227] hover:text-[#E6C95C] transition-colors duration-200 inline-flex items-center gap-2 group"
               >
-                <path d="M2 10L10 2M10 2H5M10 2V7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </Link>
+                Explorer tous les services
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  className="group-hover:translate-x-[2px] group-hover:-translate-y-[2px] transition-transform duration-200"
+                >
+                  <path d="M2 10L10 2M10 2H5M10 2V7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
+            </RevealFade>
           </div>
         </div>
 
-        {/* ─── Grille : cards au format 3:2 (1536×1024 natif) ─── */}
+        {/* ═══════════════════════════════════════════
+            GRILLE : cards avec animation en cascade
+            ═══════════════════════════════════════════ */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-          {expertises.map((item) => (
-            <article
+          {expertises.map((item, index) => (
+            <RevealCard
               key={item.num}
-              className="group relative overflow-hidden border border-[rgba(201,162,39,0.15)] hover:border-[rgba(201,162,39,0.5)] transition-all duration-500 cursor-pointer aspect-[3/2]"
+              delay={700 + index * 100}
+              duration={1000}
             >
-              {/* ═══════════════════════════════════════════
-                  IMAGE DE FOND (3:2 natif)
-                  ═══════════════════════════════════════════ */}
-              <Image
-                src={item.img}
-                alt={item.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover object-center transition-transform duration-[1200ms] ease-out group-hover:scale-110"
-              />
+              <article className="group relative overflow-hidden border border-[rgba(201,162,39,0.15)] hover:border-[rgba(201,162,39,0.5)] transition-all duration-500 cursor-pointer aspect-[3/2] h-full">
+                {/* ═══ IMAGE DE FOND ═══ */}
+                <Image
+                  src={item.img}
+                  alt={item.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover object-center transition-transform duration-[1200ms] ease-out group-hover:scale-110"
+                />
 
-              {/* ═══════════════════════════════════════════
-                  DÉGRADÉS NOIRS POUR LA LISIBILITÉ
-                  ═══════════════════════════════════════════ */}
+                {/* ═══ DÉGRADÉS POUR LA LISIBILITÉ ═══ */}
 
-              {/* Dégradé principal : noir en bas, transparent en haut */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent pointer-events-none" />
+                {/* Dégradé principal : noir en bas */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent pointer-events-none" />
 
-              {/* Dégradé secondaire : assombrit légèrement le haut */}
-              <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/60 via-transparent to-transparent pointer-events-none" />
+                {/* Dégradé secondaire : assombrit le haut */}
+                <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/60 via-transparent to-transparent pointer-events-none" />
 
-              {/* Voile global noir semi-transparent */}
-              <div className="absolute inset-0 bg-[#050505]/20 group-hover:bg-[#050505]/40 transition-colors duration-500 pointer-events-none" />
+                {/* Voile global noir */}
+                <div className="absolute inset-0 bg-[#050505]/20 group-hover:bg-[#050505]/40 transition-colors duration-500 pointer-events-none" />
 
-              {/* Voile doré subtil au hover */}
-              <div className="absolute inset-0 bg-[#C9A227]/0 group-hover:bg-[#C9A227]/5 transition-colors duration-500 pointer-events-none" />
+                {/* Voile doré au hover */}
+                <div className="absolute inset-0 bg-[#C9A227]/0 group-hover:bg-[#C9A227]/5 transition-colors duration-500 pointer-events-none" />
 
-              {/* Effet de brillance */}
-              <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] group-hover:left-full transition-all duration-[1400ms] ease-out" />
-              </div>
-
-              {/* ═══════════════════════════════════════════
-                  CONTENU SUPERPOSÉ
-                  ═══════════════════════════════════════════ */}
-              <div className="relative z-10 flex flex-col justify-between h-full p-5 md:p-6">
-                {/* ─── Ligne supérieure : numéro + icône ─── */}
-                <div className="flex items-start justify-between">
-                  <span className="font-display text-[12px] md:text-[13px] tracking-widest text-[#C9A227]">
-                    {item.num}
-                  </span>
-
-                  <span className="text-[#C9A227] opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110 group-hover:rotate-[8deg] drop-shadow-[0_0_10px_rgba(201,162,39,0.4)]">
-                    {item.icon}
-                  </span>
+                {/* Effet shine */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  <div className="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] group-hover:left-full transition-all duration-[1400ms] ease-out" />
                 </div>
 
-                {/* ─── Contenu bas ─── */}
-                <div>
-                  {/* Titre */}
-                  <h3
-                    className="font-display tracking-tight text-white mb-2 group-hover:text-[#C9A227] transition-colors duration-500 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
-                    style={{
-                      fontSize: "clamp(16px, 1.4vw, 20px)",
-                      fontWeight: 500,
-                      lineHeight: 1.15,
-                    }}
-                  >
-                    {item.title}
-                  </h3>
+                {/* ═══ CONTENU ═══ */}
+                <div className="relative z-10 flex flex-col justify-between h-full p-5 md:p-6">
+                  {/* Ligne supérieure : numéro + icône */}
+                  <div className="flex items-start justify-between">
+                    {/* <span className="font-display text-[12px] md:text-[13px] tracking-widest text-[#C9A227]">
+                      {item.num}
+                    </span> */}
 
-                  {/* Description */}
-                  <p className="text-[12px] md:text-[13px] leading-relaxed text-[#d0d0d0] group-hover:text-white transition-colors duration-500 max-w-[340px] drop-shadow-[0_1px_4px_rgba(0,0,0,0.7)]">
-                    {item.desc}
-                  </p>
+                    <span className="text-[#C9A227] opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110 group-hover:rotate-[8deg] drop-shadow-[0_0_10px_rgba(201,162,39,0.4)]">
+                      {item.icon}
+                    </span>
+                  </div>
+
+                  {/* Contenu bas */}
+                  <div>
+                    <h3
+                      className="font-display tracking-tight text-white mb-2 group-hover:text-[#C9A227] transition-colors duration-500 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
+                      style={{
+                        fontSize: "clamp(16px, 1.4vw, 20px)",
+                        fontWeight: 500,
+                        lineHeight: 1.15,
+                      }}
+                    >
+                      {item.title}
+                    </h3>
+
+                    <p className="text-[12px] md:text-[13px] leading-relaxed text-[#d0d0d0] group-hover:text-white transition-colors duration-500 max-w-[340px] drop-shadow-[0_1px_4px_rgba(0,0,0,0.7)]">
+                      {item.desc}
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              {/* ─── Coins décoratifs dorés ─── */}
-              <span className="absolute top-3 left-3 w-4 h-[1px] bg-[#C9A227]/70 group-hover:bg-[#C9A227] transition-colors duration-500 z-20" />
-              <span className="absolute top-3 left-3 w-[1px] h-4 bg-[#C9A227]/70 group-hover:bg-[#C9A227] transition-colors duration-500 z-20" />
-              <span className="absolute bottom-3 right-3 w-4 h-[1px] bg-[#C9A227]/70 group-hover:bg-[#C9A227] transition-colors duration-500 z-20" />
-              <span className="absolute bottom-3 right-3 w-[1px] h-4 bg-[#C9A227]/70 group-hover:bg-[#C9A227] transition-colors duration-500 z-20" />
+                {/* ═══ DÉCORATIONS ═══ */}
+                <span className="absolute top-3 left-3 w-4 h-[1px] bg-[#C9A227]/70 group-hover:bg-[#C9A227] transition-colors duration-500 z-20" />
+                <span className="absolute top-3 left-3 w-[1px] h-4 bg-[#C9A227]/70 group-hover:bg-[#C9A227] transition-colors duration-500 z-20" />
+                <span className="absolute bottom-3 right-3 w-4 h-[1px] bg-[#C9A227]/70 group-hover:bg-[#C9A227] transition-colors duration-500 z-20" />
+                <span className="absolute bottom-3 right-3 w-[1px] h-4 bg-[#C9A227]/70 group-hover:bg-[#C9A227] transition-colors duration-500 z-20" />
 
-              {/* ─── Ligne dorée animée en bas ─── */}
-              <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#C9A227] group-hover:w-full transition-all duration-700 ease-out z-20" />
+                {/* Ligne dorée bas */}
+                <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#C9A227] group-hover:w-full transition-all duration-700 ease-out z-20" />
 
-              {/* ─── Ligne dorée animée en haut ─── */}
-              <span className="absolute top-0 left-0 w-0 h-[2px] bg-[#C9A227] group-hover:w-full transition-all duration-700 ease-out z-20" />
-            </article>
+                {/* Ligne dorée haut */}
+                <span className="absolute top-0 left-0 w-0 h-[2px] bg-[#C9A227] group-hover:w-full transition-all duration-700 ease-out z-20" />
+              </article>
+            </RevealCard>
           ))}
         </div>
       </div>
