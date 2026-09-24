@@ -7,7 +7,7 @@ export default function ProchainPasSection() {
         {/* Label supérieur */}
         <div className="flex items-center gap-3 mb-8 md:mb-10">
           <div className="w-8 h-[1px] bg-[#C9A227]" />
-          <span className="font-display text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-[#C9A227]">
+          <span className="font-display text-[14px] md:text-[16px] tracking-[0.22em] uppercase text-[#C9A227]">
             Le prochain pas
           </span>
         </div>
@@ -32,28 +32,34 @@ export default function ProchainPasSection() {
           leviers les plus utiles—sans vous imposer une formule standard.
         </p>
 
-        {/* CTA */}
-        <Link
-          href="/contact"
-          className="group inline-flex items-center gap-3 font-display text-[13px] md:text-[14px] tracking-[0.05em] uppercase text-[#050505] font-medium px-7 md:px-8 py-4 md:py-5 bg-[#C9A227] hover:bg-[#E6C95C] transition-colors duration-300"
-        >
-          Parler de votre projet
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            className="group-hover:translate-x-[2px] group-hover:-translate-y-[2px] transition-transform duration-300"
+        {/* CTA — nouveau style outline avec remplissage */}
+        <div className="flex items-center">
+          <Link
+            href="/contact"
+            className="group relative inline-flex items-center gap-3 font-display text-[12px] md:text-[13px] tracking-[0.18em] uppercase text-[#0a0a0a] font-medium px-8 py-4 border-2 border-[#0a0a0a] overflow-hidden transition-colors duration-500 hover:text-[#EDEAE3]"
           >
-            <path
-              d="M2 12L12 2M12 2H5M12 2V9"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
+            {/* Fond noir qui glisse au hover */}
+            <span className="absolute inset-0 bg-[#0a0a0a] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" />
+
+            {/* Contenu (au-dessus du fond animé) */}
+            <span className="relative z-10">Parler de votre projet</span>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              className="relative z-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"
+            >
+              <path
+                d="M2 12L12 2M12 2H5M12 2V9"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
+        </div>
       </div>
     </section>
   );

@@ -1,70 +1,60 @@
-const steps = ["COMPRENDRE", "STRUCTURER", "CRÉER", "ACTIVER", "AMÉLIORER"];
-
 export default function SystemeIntroSection() {
   return (
-    <section className="relative bg-[#EDEAE3] py-20 md:py-28 lg:py-32">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Colonne gauche — label + titre */}
-          <div className="lg:col-span-6">
-            {/* Label supérieur */}
-            <div className="flex items-center gap-3 mb-8 md:mb-12">
-              <div className="w-8 h-[1px] bg-[#C9A227]" />
-              <span className="font-display text-[11px] md:text-[12px] tracking-[0.22em] uppercase text-[#C9A227]">
-                Le système Digitamine
-              </span>
-            </div>
+    <section className="relative bg-[#EDEAE3] py-20 md:py-28 lg:py-32 overflow-hidden">
+      {/* Halo doré diffus en arrière-plan */}
+      <div
+        className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none opacity-[0.06]"
+        style={{
+          background: "radial-gradient(circle, rgba(201,162,39,0.6) 0%, transparent 60%)",
+        }}
+      />
 
-            {/* Titre principal */}
-            <h2
-              className="font-display tracking-[-0.02em] text-[#0a0a0a]"
-              style={{
-                fontSize: "clamp(38px, 5.2vw, 82px)",
-                lineHeight: 1.05,
-                fontWeight: 400,
-              }}
-            >
-              Un besoin peut être
-              <br />
-              isolé.
-              <br />
-              La réflexion, jamais.
-            </h2>
-          </div>
+      {/* Grille décorative subtile */}
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(10,10,10,1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(10,10,10,1) 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
+          maskImage: `radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 90%)`,
+          WebkitMaskImage: `radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 90%)`,
+        }}
+      />
 
-          {/* Colonne droite — frise des étapes */}
-          <div className="lg:col-span-6">
-            <div className="border-t border-b border-[rgba(10,10,10,0.15)] py-6 md:py-8">
-              <div className="flex flex-wrap items-center justify-start lg:justify-end gap-x-4 gap-y-3 md:gap-x-6">
-                {steps.map((step, index) => (
-                  <div key={step} className="flex items-center gap-3 md:gap-5">
-                    <span className="font-display text-[11px] md:text-[12px] tracking-[0.15em] uppercase text-[#0a0a0a]">
-                      {step}
-                    </span>
+      <div className="relative max-w-[1400px] mx-auto px-6 md:px-10">
+        {/* Label supérieur aligné à gauche */}
+        <div className="flex items-center gap-3 mb-10 md:mb-14">
+          <div className="w-10 h-[1px] bg-[#C9A227]" />
+          <span className="font-display text-[14px] md:text-[16px] tracking-[0.22em] uppercase text-[#C9A227]">
+            Le système Digitamine
+          </span>
+        </div>
 
-                    {/* Flèche entre les étapes (sauf après la dernière) */}
-                    {index < steps.length - 1 && (
-                      <svg
-                        width="14"
-                        height="10"
-                        viewBox="0 0 14 10"
-                        fill="none"
-                        className="text-[#C9A227]"
-                      >
-                        <path
-                          d="M1 5h12M9 1l4 4-4 4"
-                          stroke="currentColor"
-                          strokeWidth="1.2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+        {/* Titre principal centré, prenant tout l'espace */}
+        <h2
+          className="font-display tracking-[-0.03em] text-[#0a0a0a] mx-auto text-center max-w-[1200px]"
+          style={{
+            fontSize: "clamp(40px, 6.5vw, 110px)",
+            lineHeight: 1.02,
+            fontWeight: 400,
+          }}
+        >
+          Un besoin peut être isolé.
+          <br />
+          <span
+            style={{
+              color: "#9c9c9c",
+            }}
+          >
+            La réflexion, jamais.
+          </span>
+        </h2>
+
+        {/* Petit trait doré décoratif en bas */}
+        <div className="flex justify-center mt-14 md:mt-20">
+          <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#C9A227] to-transparent" />
         </div>
       </div>
     </section>

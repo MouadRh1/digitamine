@@ -2,6 +2,7 @@ import RealisationsHeroSection from "../components/realisations/RealisationsHero
 import RealisationsGridSection from "../components/realisations/RealisationsGridSection";
 import SelectionNoteSection from "../components/realisations/SelectionNoteSection";
 import FinalCTASection from "../components/realisations/FinalCTASection";
+import RealisationsCTASection from "../components/realisations/RealisationsCTASection";
 
 export const metadata = {
   title: "Réalisations — DIGITAMINE",
@@ -13,8 +14,9 @@ export default function RealisationsPage() {
     <div className="bg-[#050505]">
       <RealisationsHeroSection />
       <RealisationsGridSection />
-      <SelectionNoteSection />
-      <FinalCTASection />
+      <RealisationsCTASection/>
+      {/* <SelectionNoteSection />
+      <FinalCTASection /> */}
       {/* <RealisationsGridSection /> */}
       {/* <FinalCTASection /> */}
     </div>

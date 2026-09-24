@@ -1,15 +1,26 @@
 import Link from "next/link";
 
-const categories = [
-  { num: "01", label: "Stratégie & contenu" },
-  { num: "02", label: "Sites web & parcours" },
-  { num: "03", label: "Meta Ads & acquisition" },
-  { num: "04", label: "Production audiovisuelle" },
-];
-
 export default function RealisationsHeroSection() {
   return (
-    <section className="relative h-screen flex flex-col overflow-hidden pt-[72px] bg-[#050505]">
+    <section className="relative h-screen max-h-screen flex items-center overflow-hidden pt-[72px] pb-[60px] bg-[#050505]">
+      {/* ═══════════════════════════════════════════
+          ARRIÈRE-PLAN
+          ═══════════════════════════════════════════ */}
+
+      {/* Grands arcs décoratifs (côté droit) */}
+      <div className="absolute top-0 right-0 bottom-0 w-[55%] pointer-events-none opacity-40 hidden md:block">
+        <svg
+          viewBox="0 0 800 800"
+          preserveAspectRatio="xMidYMid slice"
+          className="w-full h-full"
+          fill="none"
+        >
+          <circle cx="700" cy="400" r="500" stroke="rgba(201,162,39,0.10)" strokeWidth="1" />
+          <circle cx="700" cy="400" r="380" stroke="rgba(201,162,39,0.08)" strokeWidth="1" />
+          <circle cx="700" cy="400" r="260" stroke="rgba(201,162,39,0.12)" strokeWidth="1" />
+        </svg>
+      </div>
+
       {/* Grille de fond subtile */}
       <div
         className="absolute inset-0 opacity-[0.02] pointer-events-none"
@@ -22,35 +33,38 @@ export default function RealisationsHeroSection() {
         }}
       />
 
-      {/* ─── Contenu principal (haut) ─── */}
-      <div className="relative z-10 flex-1 flex items-center max-w-[1400px] mx-auto px-6 md:px-10 w-full py-10 md:py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 w-full">
-          {/* Colonne gauche — numéro + label */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-3">
-              <span className="font-display text-[12px] md:text-[13px] tracking-widest text-[#C9A227]">
-                03
-              </span>
-              <div className="w-8 h-[1px] bg-[#C9A227]" />
-              <span className="font-display text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-[#C9A227]">
+      {/* Halo doré diffus */}
+      <div
+        className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none opacity-[0.06]"
+        style={{
+          background: "radial-gradient(circle, rgba(201,162,39,0.6) 0%, transparent 60%)",
+        }}
+      />
+
+      {/* ═══════════════════════════════════════════
+          CONTENU PRINCIPAL
+          ═══════════════════════════════════════════ */}
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10 w-full py-8 md:py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+          {/* ─── Colonne gauche : label + titre + description + lien ─── */}
+          <div className="lg:col-span-9">
+            {/* Label supérieur — aligné à gauche comme Services */}
+            <div className="flex items-center gap-3 mb-6 md:mb-8">
+              <div className="w-10 h-[1px] bg-[#C9A227]" />
+              <span className="font-display text-[11px] md:text-[13px] tracking-[0.22em] uppercase text-[#C9A227]">
                 Réalisations
               </span>
+              <span className="font-display text-[11px] md:text-[13px] tracking-[0.22em] uppercase text-[#C9A227]/50">
+                / 03
+              </span>
             </div>
-          </div>
-
-          {/* Colonne centrale — label + titre + description + lien */}
-          <div className="lg:col-span-10">
-            {/* Label supérieur */}
-            <p className="font-display text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-[#C9A227] mb-6 md:mb-8">
-              Projets sélectionnés
-            </p>
 
             {/* Titre principal */}
             <h1
-              className="font-display tracking-[-0.02em] mb-8 md:mb-12"
+              className="font-display tracking-[-0.02em] mb-6 md:mb-8"
               style={{
-                fontSize: "clamp(44px, 7vw, 118px)",
-                lineHeight: 0.98,
+                fontSize: "clamp(36px, 5.2vw, 80px)",
+                lineHeight: 1.02,
                 fontWeight: 400,
               }}
             >
@@ -60,7 +74,7 @@ export default function RealisationsHeroSection() {
             </h1>
 
             {/* Description */}
-            <p className="text-[15px] md:text-[16px] leading-relaxed text-[#A0A0A0] mb-8 md:mb-10 max-w-[700px]">
+            <p className="text-[14px] md:text-[15px] leading-relaxed text-[#A0A0A0] mb-6 md:mb-8 max-w-[620px]">
               Nos réalisations sont regroupées par service pour montrer précisément le rôle de
               chaque expertise dans le projet.
             </p>
@@ -68,7 +82,7 @@ export default function RealisationsHeroSection() {
             {/* Lien "Explorer par service ↓" */}
             <Link
               href="#categories"
-              className="group inline-flex items-center gap-3 font-display text-[13px] md:text-[14px] tracking-[0.05em] text-white hover:text-[#C9A227] transition-colors duration-200"
+              className="group inline-flex items-center gap-3 font-display text-[12px] md:text-[13px] tracking-[0.05em] text-white hover:text-[#C9A227] transition-colors duration-200"
             >
               Explorer par service
               <svg
@@ -88,36 +102,45 @@ export default function RealisationsHeroSection() {
               </svg>
             </Link>
           </div>
-        </div>
-      </div>
 
-      {/* ─── Barre des catégories (bas) ─── */}
-      <div
-        id="categories"
-        className="relative z-10 border-t border-b border-[rgba(201,162,39,0.15)] bg-[rgba(5,5,5,0.5)]"
-      >
-        <div className="max-w-[1400px] mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4">
-            {categories.map((cat, index) => (
-              <Link
-                key={cat.num}
-                href={`#${cat.num}`}
-                className={`group flex items-center gap-4 md:gap-5 px-6 md:px-10 py-5 md:py-6 border-[rgba(201,162,39,0.15)] transition-colors duration-300 hover:bg-[rgba(201,162,39,0.03)] ${
-                  // Bordures verticales entre les items (sauf le dernier)
-                  index < categories.length - 1 ? "border-r" : ""
-                } ${index < 2 ? "border-b md:border-b-0" : ""}`}
-              >
-                <span className="font-display text-[11px] md:text-[12px] tracking-widest text-[#C9A227] shrink-0">
-                  {cat.num}
-                </span>
-                <span className="font-display text-[13px] md:text-[14px] tracking-tight text-white group-hover:text-[#C9A227] transition-colors duration-300 whitespace-nowrap">
-                  {cat.label}
-                </span>
-              </Link>
-            ))}
+          {/* ─── Colonne droite : "Notre approche" ─── */}
+          <div className="lg:col-span-3 flex items-end">
+            <div className="w-full border-t border-[rgba(201,162,39,0.2)] pt-5 md:pt-6 mt-8 lg:mt-0">
+              <p className="font-display text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-[#C9A227] mb-3 md:mb-4">
+                Notre approche
+              </p>
+              <p className="text-[13px] md:text-[14px] leading-relaxed text-[#A0A0A0]">
+                Chaque projet a un contexte. Nous montrons le rôle précis de chaque expertise
+                dans le résultat final.
+              </p>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* ═══════════════════════════════════════════
+          INDICATEURS BAS DE PAGE
+          ═══════════════════════════════════════════ */}
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none">
+        <span className="font-display text-[9px] tracking-[0.3em] uppercase text-white/30">
+          SCROLL
+        </span>
+        <div className="w-[1px] h-6 bg-gradient-to-b from-[#C9A227]/50 to-transparent" />
+      </div>
+
+      {/* Marqueur "03 / RÉALISATIONS" en bas à droite */}
+      <div className="absolute bottom-6 right-8 hidden md:flex items-center gap-3 pointer-events-none">
+        <span className="font-display text-[10px] tracking-[0.25em] uppercase text-[#C9A227]/60">
+          03 / RÉALISATIONS
+        </span>
+        <div className="w-12 h-[1px] bg-[#C9A227]/40" />
+      </div>
+
+      {/* Coins décoratifs dorés */}
+      <div className="absolute top-[100px] md:top-[112px] left-6 md:left-10 w-16 h-[1px] bg-[#C9A227]/40 pointer-events-none" />
+      <div className="absolute top-[100px] md:top-[112px] left-6 md:left-10 w-[1px] h-16 bg-[#C9A227]/40 pointer-events-none" />
     </section>
   );
 }
