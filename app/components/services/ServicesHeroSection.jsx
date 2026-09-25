@@ -138,6 +138,17 @@ export default function ServicesHeroSection() {
       />
 
       {/* ═══════════════════════════════════════════
+          GRADIENT DORÉ EN BAS — IDENTIQUE À LA HERO HOME
+          ═══════════════════════════════════════════ */}
+      <div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at bottom, rgba(201,162,39,0.15) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* ═══════════════════════════════════════════
           CONTENU PRINCIPAL
           ═══════════════════════════════════════════ */}
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10 w-full py-8 md:py-10">
