@@ -30,8 +30,36 @@ export default function ContactProcessSection() {
   };
 
   return (
-    <section className="relative bg-[#050505] border-t border-[rgba(201,162,39,0.08)]">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 md:py-20 lg:py-24">
+    <section className="relative bg-[#050505] border-t border-[rgba(201,162,39,0.08)] overflow-hidden">
+      {/* ═══════════════════════════════════════════
+          DÉCORATIONS DE FOND
+          ═══════════════════════════════════════════ */}
+
+      {/* Halo doré diffus à droite */}
+      <div
+        className="absolute top-1/2 right-0 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none opacity-[0.06] hidden md:block"
+        style={{
+          background: "radial-gradient(circle, rgba(201,162,39,0.6) 0%, transparent 60%)",
+        }}
+      />
+
+      {/* Grille décorative */}
+      <div
+        className="absolute inset-0 opacity-[0.02] pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(201,162,39,1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(201,162,39,1) 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
+        }}
+      />
+
+      {/* Trait doré décoratif haut-gauche */}
+      <div className="absolute top-12 left-6 md:top-16 md:left-10 w-16 h-[1px] bg-[#C9A227]/40 pointer-events-none" />
+      <div className="absolute top-12 left-6 md:top-16 md:left-10 w-[1px] h-16 bg-[#C9A227]/40 pointer-events-none" />
+
+      <div className="relative max-w-[1400px] mx-auto px-6 md:px-10 py-16 md:py-20 lg:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           {/* ════════════════════════════════════════════
               ASIDE GAUCHE — sticky pendant le scroll
@@ -40,28 +68,46 @@ export default function ContactProcessSection() {
             <div className="lg:sticky lg:top-[100px]">
               {/* Label supérieur */}
               <div className="flex items-center gap-3 mb-8 md:mb-10">
-                <div className="w-8 h-[1px] bg-[#C9A227]" />
-                <span className="font-display text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-[#C9A227]">
+                <div className="w-10 h-[1px] bg-[#C9A227]" />
+                <span className="font-display text-[11px] md:text-[13px] tracking-[0.22em] uppercase text-[#C9A227]">
                   Ce qui se passe ensuite
                 </span>
               </div>
+
+              {/* Titre aside */}
+              <h2
+                className="font-display tracking-[-0.02em] text-white mb-8 md:mb-10"
+                style={{
+                  fontSize: "clamp(24px, 2.4vw, 36px)",
+                  lineHeight: 1.1,
+                  fontWeight: 400,
+                }}
+              >
+                Un processus
+                <br />
+                <span className="text-[#C9A227]">simple et transparent.</span>
+              </h2>
 
               {/* Liste des étapes */}
               <div className="border-t border-[rgba(201,162,39,0.15)]">
                 {etapes.map((etape) => (
                   <div
                     key={etape.num}
-                    className="grid grid-cols-12 gap-4 py-5 md:py-6 border-b border-[rgba(201,162,39,0.15)]"
+                    className="group grid grid-cols-12 gap-4 py-5 md:py-6 border-b border-[rgba(201,162,39,0.15)] transition-colors duration-300 hover:bg-[rgba(201,162,39,0.02)]"
                   >
                     <div className="col-span-2 md:col-span-1">
-                      <span className="font-display text-[11px] md:text-[12px] tracking-widest text-[#C9A227]">
+                      <span className="font-display text-[11px] md:text-[12px] tracking-widest text-[#C9A227] transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(201,162,39,0.6)]">
                         {etape.num}
                       </span>
                     </div>
                     <div className="col-span-10 md:col-span-11">
                       <h3
-                        className="font-display tracking-tight text-white mb-2"
-                        style={{ fontSize: "clamp(15px, 1.2vw, 18px)", fontWeight: 500, lineHeight: 1.2 }}
+                        className="font-display tracking-tight text-white mb-2 transition-colors duration-300 group-hover:text-[#C9A227]"
+                        style={{
+                          fontSize: "clamp(15px, 1.2vw, 18px)",
+                          fontWeight: 500,
+                          lineHeight: 1.2,
+                        }}
                       >
                         {etape.title}
                       </h3>
@@ -73,15 +119,23 @@ export default function ContactProcessSection() {
                 ))}
               </div>
 
-              {/* Bloc encadré doré */}
-              <div className="mt-8 md:mt-10 border-l-2 border-[#C9A227] bg-[rgba(201,162,39,0.04)] p-5 md:p-6">
-                <p className="text-[13px] md:text-[14px] font-medium text-white mb-2">
-                  Un premier échange simple et concret.
-                </p>
-                <p className="text-[12px] md:text-[13px] leading-relaxed text-[#A0A0A0]">
-                  L&apos;objectif n&apos;est pas de vous vendre tous nos services, mais
-                  de comprendre lesquels ont du sens pour votre entreprise.
-                </p>
+              {/* Bloc encadré doré — style cohérent charte */}
+              <div className="mt-8 md:mt-10 relative">
+                {/* Coins décoratifs */}
+                <span className="absolute top-0 left-0 w-4 h-[1px] bg-[#C9A227]/70" />
+                <span className="absolute top-0 left-0 w-[1px] h-4 bg-[#C9A227]/70" />
+                <span className="absolute bottom-0 right-0 w-4 h-[1px] bg-[#C9A227]/70" />
+                <span className="absolute bottom-0 right-0 w-[1px] h-4 bg-[#C9A227]/70" />
+
+                <div className="border-l-2 border-[#C9A227] bg-[rgba(201,162,39,0.04)] p-5 md:p-6">
+                  <p className="font-display text-[13px] md:text-[14px] font-medium text-white mb-2">
+                    Un premier échange simple et concret.
+                  </p>
+                  <p className="text-[12px] md:text-[13px] leading-relaxed text-[#A0A0A0]">
+                    L&apos;objectif n&apos;est pas de vous vendre tous nos services, mais
+                    de comprendre lesquels ont du sens pour votre entreprise.
+                  </p>
+                </div>
               </div>
             </div>
           </aside>
@@ -95,13 +149,18 @@ export default function ContactProcessSection() {
               <div>
                 <div className="mb-8 md:mb-10">
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="font-display text-[11px] md:text-[12px] tracking-widest text-[#C9A227]">
-                      01
+                    <div className="w-8 h-[1px] bg-[#C9A227]" />
+                    <span className="font-display text-[11px] md:text-[12px] tracking-[0.22em] uppercase text-[#C9A227]">
+                      Étape 01
                     </span>
                   </div>
                   <h2
                     className="font-display tracking-[-0.02em] text-white mb-3"
-                    style={{ fontSize: "clamp(28px, 3.5vw, 52px)", lineHeight: 1.05, fontWeight: 400 }}
+                    style={{
+                      fontSize: "clamp(28px, 3.5vw, 52px)",
+                      lineHeight: 1.05,
+                      fontWeight: 400,
+                    }}
                   >
                     Faisons connaissance
                   </h2>
@@ -112,7 +171,7 @@ export default function ContactProcessSection() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                   <div>
-                    <label className="block text-[12px] md:text-[13px] font-medium text-white mb-3">
+                    <label className="block font-display text-[11px] md:text-[12px] tracking-[0.15em] uppercase text-[#A0A0A0] mb-3">
                       Nom et prénom <span className="text-[#C9A227]">*</span>
                     </label>
                     <input
@@ -123,7 +182,7 @@ export default function ContactProcessSection() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[12px] md:text-[13px] font-medium text-white mb-3">
+                    <label className="block font-display text-[11px] md:text-[12px] tracking-[0.15em] uppercase text-[#A0A0A0] mb-3">
                       Entreprise <span className="text-[#C9A227]">*</span>
                     </label>
                     <input
@@ -134,7 +193,7 @@ export default function ContactProcessSection() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[12px] md:text-[13px] font-medium text-white mb-3">
+                    <label className="block font-display text-[11px] md:text-[12px] tracking-[0.15em] uppercase text-[#A0A0A0] mb-3">
                       E-mail professionnel <span className="text-[#C9A227]">*</span>
                     </label>
                     <input
@@ -145,7 +204,7 @@ export default function ContactProcessSection() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[12px] md:text-[13px] font-medium text-white mb-3">
+                    <label className="block font-display text-[11px] md:text-[12px] tracking-[0.15em] uppercase text-[#A0A0A0] mb-3">
                       Téléphone / WhatsApp
                     </label>
                     <input
@@ -160,12 +219,19 @@ export default function ContactProcessSection() {
               {/* ─── Étape 02 : De quoi avez-vous besoin ? ─── */}
               <div className="pt-10 md:pt-12 border-t border-[rgba(201,162,39,0.15)]">
                 <div className="mb-8 md:mb-10">
-                  <span className="font-display text-[11px] md:text-[12px] tracking-widest text-[#C9A227]">
-                    02
-                  </span>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-[1px] bg-[#C9A227]" />
+                    <span className="font-display text-[11px] md:text-[12px] tracking-[0.22em] uppercase text-[#C9A227]">
+                      Étape 02
+                    </span>
+                  </div>
                   <h2
-                    className="font-display tracking-[-0.02em] text-white mt-4 mb-3"
-                    style={{ fontSize: "clamp(28px, 3.5vw, 52px)", lineHeight: 1.05, fontWeight: 400 }}
+                    className="font-display tracking-[-0.02em] text-white mb-3"
+                    style={{
+                      fontSize: "clamp(28px, 3.5vw, 52px)",
+                      lineHeight: 1.05,
+                      fontWeight: 400,
+                    }}
                   >
                     De quoi avez-vous besoin ?
                   </h2>
@@ -182,15 +248,24 @@ export default function ContactProcessSection() {
                         key={besoin}
                         type="button"
                         onClick={() => toggleBesoin(besoin)}
-                        className={`flex items-center gap-3 text-left px-5 py-4 border transition-all duration-200 ${
+                        className={`group relative flex items-center gap-3 text-left px-5 py-4 border transition-all duration-300 overflow-hidden ${
                           isActive
                             ? "bg-[rgba(201,162,39,0.08)] border-[#C9A227] text-white"
                             : "bg-transparent border-[rgba(201,162,39,0.2)] text-white/90 hover:border-[rgba(201,162,39,0.5)] hover:bg-[rgba(201,162,39,0.03)]"
                         }`}
                       >
+                        {/* Ligne dorée en bas au hover */}
                         <span
-                          className={`text-[14px] leading-none font-light transition-transform duration-200 ${
-                            isActive ? "text-[#C9A227] rotate-45" : "text-[#C9A227]"
+                          className={`absolute bottom-0 left-0 h-[1px] bg-[#C9A227] transition-all duration-500 ease-out ${
+                            isActive ? "w-full" : "w-0 group-hover:w-full"
+                          }`}
+                        />
+
+                        <span
+                          className={`text-[14px] leading-none font-light transition-transform duration-300 ${
+                            isActive
+                              ? "text-[#C9A227] rotate-45"
+                              : "text-[#C9A227] group-hover:rotate-90"
                           }`}
                         >
                           +
@@ -205,12 +280,19 @@ export default function ContactProcessSection() {
               {/* ─── Étape 03 : Parlez-nous du contexte ─── */}
               <div className="pt-10 md:pt-12 border-t border-[rgba(201,162,39,0.15)]">
                 <div className="mb-8 md:mb-10">
-                  <span className="font-display text-[11px] md:text-[12px] tracking-widest text-[#C9A227]">
-                    03
-                  </span>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-[1px] bg-[#C9A227]" />
+                    <span className="font-display text-[11px] md:text-[12px] tracking-[0.22em] uppercase text-[#C9A227]">
+                      Étape 03
+                    </span>
+                  </div>
                   <h2
-                    className="font-display tracking-[-0.02em] text-white mt-4 mb-3"
-                    style={{ fontSize: "clamp(28px, 3.5vw, 52px)", lineHeight: 1.05, fontWeight: 400 }}
+                    className="font-display tracking-[-0.02em] text-white mb-3"
+                    style={{
+                      fontSize: "clamp(28px, 3.5vw, 52px)",
+                      lineHeight: 1.05,
+                      fontWeight: 400,
+                    }}
                   >
                     Parlez-nous du contexte
                   </h2>
@@ -221,7 +303,7 @@ export default function ContactProcessSection() {
 
                 {/* Textarea */}
                 <div className="mb-8 md:mb-10">
-                  <label className="block text-[12px] md:text-[13px] font-medium text-white mb-3">
+                  <label className="block font-display text-[11px] md:text-[12px] tracking-[0.15em] uppercase text-[#A0A0A0] mb-3">
                     Votre priorité actuelle <span className="text-[#C9A227]">*</span>
                   </label>
                   <textarea
@@ -235,7 +317,7 @@ export default function ContactProcessSection() {
                 {/* Selects */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                   <div>
-                    <label className="block text-[12px] md:text-[13px] font-medium text-white mb-3">
+                    <label className="block font-display text-[11px] md:text-[12px] tracking-[0.15em] uppercase text-[#A0A0A0] mb-3">
                       Horizon du projet
                     </label>
                     <select className="form-input">
@@ -246,8 +328,8 @@ export default function ContactProcessSection() {
                       <option>Long terme (+6 mois)</option>
                     </select>
                   </div>
-                  <div>
-                    <label className="block text-[12px] md:text-[13px] font-medium text-white mb-3">
+                  {/* <div>
+                    <label className="block font-display text-[11px] md:text-[12px] tracking-[0.15em] uppercase text-[#A0A0A0] mb-3">
                       Budget envisagé
                     </label>
                     <select className="form-input">
@@ -257,7 +339,7 @@ export default function ContactProcessSection() {
                       <option>50 000 - 100 000 MAD</option>
                       <option>Plus de 100 000 MAD</option>
                     </select>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
@@ -294,6 +376,59 @@ export default function ContactProcessSection() {
           </div>
         </div>
       </div>
+
+      {/* ═══════════════════════════════════════════
+          STYLES DES INPUTS — cohérents avec la charte
+          ═══════════════════════════════════════════ */}
+      <style jsx global>{`
+        .form-input {
+          width: 100%;
+          background: transparent;
+          border: none;
+          border-bottom: 1px solid rgba(201, 162, 39, 0.25);
+          padding: 12px 0;
+          color: #ffffff;
+          font-size: 14px;
+          font-family: inherit;
+          transition: border-color 0.3s ease;
+          outline: none;
+        }
+
+        .form-input::placeholder {
+          color: rgba(160, 160, 160, 0.5);
+        }
+
+        .form-input:focus {
+          border-bottom-color: #c9a227;
+        }
+
+        .form-input:hover:not(:focus) {
+          border-bottom-color: rgba(201, 162, 39, 0.5);
+        }
+
+        /* Select — flèche personnalisée */
+        select.form-input {
+          cursor: pointer;
+          background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23C9A227' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 4px center;
+          padding-right: 24px;
+          appearance: none;
+          -webkit-appearance: none;
+        }
+
+        select.form-input option {
+          background: #0a0a0a;
+          color: #ffffff;
+          padding: 8px;
+        }
+
+        /* Textarea */
+        textarea.form-input {
+          font-family: inherit;
+          line-height: 1.6;
+        }
+      `}</style>
     </section>
   );
 }

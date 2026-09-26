@@ -85,7 +85,8 @@ const expertises = [
 ];
 
 // ═══════════════════════════════════════════
-// HOOK : Détecte l'entrée dans le viewport
+// HOOK : Détecte l'entrée/sortie dans le viewport
+// (rejouable à chaque entrée/sortie)
 // ═══════════════════════════════════════════
 function useInView(options = {}) {
   const [isInView, setIsInView] = useState(false);
@@ -104,10 +105,8 @@ function useInView(options = {}) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.disconnect();
-        }
+        // ✅ Se met à jour à CHAQUE entrée ET sortie
+        setIsInView(entry.isIntersecting);
       },
       { threshold: 0.15, ...options }
     );
@@ -122,7 +121,7 @@ function useInView(options = {}) {
 // ═══════════════════════════════════════════
 // RevealMask : contenu qui sort de sous un masque
 // ═══════════════════════════════════════════
-function RevealMask({ children, delay = 0, duration = 1000 }) {
+function RevealMask({ children, delay = 0, duration = 600 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -131,7 +130,7 @@ function RevealMask({ children, delay = 0, duration = 1000 }) {
         className="transition-transform ease-[cubic-bezier(0.65,0,0.35,1)]"
         style={{
           transitionDuration: `${duration}ms`,
-          transitionDelay: `${delay}ms`,
+          transitionDelay: isInView ? `${delay}ms` : "0ms",
           transform: isInView ? "translateY(0%)" : "translateY(110%)",
         }}
       >
@@ -144,7 +143,7 @@ function RevealMask({ children, delay = 0, duration = 1000 }) {
 // ═══════════════════════════════════════════
 // RevealFade : fade + slide up
 // ═══════════════════════════════════════════
-function RevealFade({ children, delay = 0, duration = 900 }) {
+function RevealFade({ children, delay = 0, duration = 550 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -153,7 +152,7 @@ function RevealFade({ children, delay = 0, duration = 900 }) {
       className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
       style={{
         transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
+        transitionDelay: isInView ? `${delay}ms` : "0ms",
         opacity: isInView ? 1 : 0,
         transform: isInView ? "translateY(0)" : "translateY(30px)",
       }}
@@ -166,7 +165,7 @@ function RevealFade({ children, delay = 0, duration = 900 }) {
 // ═══════════════════════════════════════════
 // RevealCard : animation dédiée aux cards (fade + scale + slide)
 // ═══════════════════════════════════════════
-function RevealCard({ children, delay = 0, duration = 1000 }) {
+function RevealCard({ children, delay = 0, duration = 600 }) {
   const [ref, isInView] = useInView({ threshold: 0.1 });
 
   return (
@@ -175,7 +174,7 @@ function RevealCard({ children, delay = 0, duration = 1000 }) {
       className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)] h-full"
       style={{
         transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
+        transitionDelay: isInView ? `${delay}ms` : "0ms",
         opacity: isInView ? 1 : 0,
         transform: isInView
           ? "translateY(0) scale(1)"
@@ -206,7 +205,7 @@ export default function ExpertisesSection() {
           {/* Label */}
           <div className="lg:col-span-3">
             <div className="mb-6 md:mb-8">
-              <RevealMask delay={0} duration={900}>
+              <RevealMask delay={0} duration={550}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-[1px] bg-[#C9A227]" />
                   <p className="font-display text-[14px] md:text-[16px] tracking-[0.22em] uppercase text-[#C9A227]">
@@ -227,13 +226,13 @@ export default function ExpertisesSection() {
                 fontWeight: 400,
               }}
             >
-              <RevealMask delay={150} duration={1000}>
+              <RevealMask delay={100} duration={600}>
                 <span className="block">Les bons leviers.</span>
               </RevealMask>
-              <RevealMask delay={300} duration={1000}>
+              <RevealMask delay={200} duration={600}>
                 <span className="block">Connectés</span>
               </RevealMask>
-              <RevealMask delay={450} duration={1000}>
+              <RevealMask delay={300} duration={600}>
                 <span className="block">intelligemment.</span>
               </RevealMask>
             </h2>
@@ -241,7 +240,7 @@ export default function ExpertisesSection() {
 
           {/* Lien "Explorer tous les services" */}
           <div className="lg:col-span-3 flex lg:justify-end items-start">
-            <RevealFade delay={600} duration={900}>
+            <RevealFade delay={400} duration={550}>
               <Link
                 href="/services"
                 className="font-display text-[12px] md:text-[13px] tracking-[0.08em] uppercase text-[#C9A227] hover:text-[#E6C95C] transition-colors duration-200 inline-flex items-center gap-2 group"
@@ -268,8 +267,8 @@ export default function ExpertisesSection() {
           {expertises.map((item, index) => (
             <RevealCard
               key={item.num}
-              delay={700 + index * 100}
-              duration={1000}
+              delay={500 + index * 70}
+              duration={600}
             >
               <article className="group relative overflow-hidden border border-[rgba(201,162,39,0.15)] hover:border-[rgba(201,162,39,0.5)] transition-all duration-500 cursor-pointer aspect-[3/2] h-full">
                 {/* ═══ IMAGE DE FOND ═══ */}

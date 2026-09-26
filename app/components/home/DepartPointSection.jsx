@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 // ═══════════════════════════════════════════
 // HOOK : Détecte quand un élément entre dans le viewport
+// (rejouable à chaque entrée/sortie)
 // ═══════════════════════════════════════════
 function useInView(options = {}) {
   const [isInView, setIsInView] = useState(false);
@@ -15,10 +16,8 @@ function useInView(options = {}) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.disconnect();
-        }
+        // ✅ On met à jour à CHAQUE fois (entrée ET sortie)
+        setIsInView(entry.isIntersecting);
       },
       { threshold: 0.15, ...options },
     );
@@ -33,7 +32,7 @@ function useInView(options = {}) {
 // ═══════════════════════════════════════════
 // COMPOSANT : Reveal avec effet de masque (clip-path)
 // ═══════════════════════════════════════════
-function RevealMask({ children, delay = 0, duration = 1200 }) {
+function RevealMask({ children, delay = 0, duration = 700 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -42,7 +41,7 @@ function RevealMask({ children, delay = 0, duration = 1200 }) {
         className="transition-transform ease-[cubic-bezier(0.65,0,0.35,1)]"
         style={{
           transitionDuration: `${duration}ms`,
-          transitionDelay: `${delay}ms`,
+          transitionDelay: isInView ? `${delay}ms` : "0ms",
           transform: isInView ? "translateY(0%)" : "translateY(110%)",
         }}
       >
@@ -55,7 +54,7 @@ function RevealMask({ children, delay = 0, duration = 1200 }) {
 // ═══════════════════════════════════════════
 // COMPOSANT : Reveal avec effet de fade + slide
 // ═══════════════════════════════════════════
-function RevealFade({ children, delay = 0, duration = 1000 }) {
+function RevealFade({ children, delay = 0, duration = 600 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -64,7 +63,7 @@ function RevealFade({ children, delay = 0, duration = 1000 }) {
       className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
       style={{
         transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
+        transitionDelay: isInView ? `${delay}ms` : "0ms",
         opacity: isInView ? 1 : 0,
         transform: isInView ? "translateY(0)" : "translateY(30px)",
       }}
@@ -102,8 +101,8 @@ function AnimatedTitle({ children, delay = 0 }) {
           <span
             className="inline-block transition-transform ease-[cubic-bezier(0.65,0,0.35,1)]"
             style={{
-              transitionDuration: "1200ms",
-              transitionDelay: `${delay + lineIndex * 150}ms`,
+              transitionDuration: "750ms",
+              transitionDelay: isInView ? `${delay + lineIndex * 100}ms` : "0ms",
               transform: isInView ? "translateY(0%)" : "translateY(110%)",
               color: line.highlight === "gray" ? "#9c9c9c" : "#0a0a0a",
             }}
@@ -158,7 +157,7 @@ export default function DepartPointSection() {
       <div className="relative max-w-[1400px] mx-auto px-6 md:px-10 w-full">
         {/* Label supérieur avec animation de masque */}
         <div className="mb-6 md:mb-8">
-          <RevealMask delay={0} duration={1000}>
+          <RevealMask delay={0} duration={600}>
             <div className="flex items-center gap-3">
               <div className="w-10 h-[1px] bg-[#C9A227]" />
               <p className="font-display text-[14px] md:text-[16px] tracking-[0.22em] uppercase text-[#C9A227]">
@@ -170,40 +169,38 @@ export default function DepartPointSection() {
 
         {/* Titre animé mot par mot */}
         <div className="mb-10 md:mb-14">
-          <AnimatedTitle delay={150} />
+          <AnimatedTitle delay={100} />
         </div>
 
-        {
-          /* Grille des deux paragraphes avec fade --> */
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-20 max-w-[1200px]">
-            <RevealFade delay={600} duration={900}>
-              <div className="relative pl-6 border-l-2 border-[#C9A227]">
-                <p className="text-[14px] md:text-[15px] leading-relaxed text-[#1a1a1a]">
-                  Publier, créer un site ou lancer une campagne ne suffit pas
-                  lorsque chaque action avance dans une direction différente.
-                </p>
-              </div>
-            </RevealFade>
+        {/* Grille des deux paragraphes avec fade */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-20 max-w-[1200px]">
+          <RevealFade delay={350} duration={550}>
+            <div className="relative pl-6 border-l-2 border-[#C9A227]">
+              <p className="text-[14px] md:text-[15px] leading-relaxed text-[#1a1a1a]">
+                Publier, créer un site ou lancer une campagne ne suffit pas
+                lorsque chaque action avance dans une direction différente.
+              </p>
+            </div>
+          </RevealFade>
 
-            <RevealFade delay={750} duration={900}>
-              <div className="relative pl-6 border-l-2 border-[#C9A227]">
-                <p className="text-[14px] md:text-[15px] leading-relaxed text-[#1a1a1a]">
-                  Nous commençons par comprendre votre entreprise. Ensuite, nous
-                  connectons les bons leviers dans un système clair.
-                </p>
-              </div>
-            </RevealFade>
-          </div>
+          <RevealFade delay={450} duration={550}>
+            <div className="relative pl-6 border-l-2 border-[#C9A227]">
+              <p className="text-[14px] md:text-[15px] leading-relaxed text-[#1a1a1a]">
+                Nous commençons par comprendre votre entreprise. Ensuite, nous
+                connectons les bons leviers dans un système clair.
+              </p>
+            </div>
+          </RevealFade>
+        </div>
 
-          /* <RevealFade delay={900} duration={800}>
+        {/* <RevealFade delay={900} duration={800}>
           <div className="flex items-center gap-3 mt-12 md:mt-16">
             <div className="w-8 h-[1px] bg-[#0a0a0a]/30" />
             <span className="font-display text-[9px] md:text-[10px] tracking-[0.3em] uppercase text-[#0a0a0a]/40">
               Penser en système
             </span>
           </div>
-        </RevealFade> */
-        }
+        </RevealFade> */}
       </div>
     </section>
   );

@@ -10,7 +10,8 @@ export const categories = [
   "Tout",
   "Social Media Marketing",
   "Sites web",
-  "Production audiovisuelle",
+  "Videographie",
+  "Photographie",
   "Couverture Media",
 ];
 
@@ -32,11 +33,11 @@ export const categories = [
  */
 export const projects = [
   // ═══════════════════════════════════════════
-  // SOCIAL MEDIA MARKETING 6 photos ───
+  // SOCIAL MEDIA MARKETING — 6 photos
   // ═══════════════════════════════════════════
   {
     id: 401,
-    title: "Ifdce",
+    title: "IFDCE",
     cat: "Social Media Marketing",
     year: "2026",
     desc: "Stratégie social media et production créative pour une marque lifestyle.",
@@ -47,7 +48,7 @@ export const projects = [
   },
   {
     id: 402,
-    title: "Itgiah",
+    title: "ITQIAH",
     cat: "Social Media Marketing",
     year: "2025",
     desc: "Identité de marque, système de logo et charte graphique.",
@@ -58,7 +59,7 @@ export const projects = [
   },
   {
     id: 403,
-    title: "Itgiah",
+    title: "ITQIAH — Série 2",
     cat: "Social Media Marketing",
     year: "2025",
     desc: "Stratégie social multi-plateforme et production mensuelle.",
@@ -69,7 +70,7 @@ export const projects = [
   },
   {
     id: 404,
-    title: "workaura",
+    title: "WORKAURA",
     cat: "Social Media Marketing",
     year: "2025",
     desc: "Campagne social media — direction artistique et production visuelle.",
@@ -80,7 +81,7 @@ export const projects = [
   },
   {
     id: 405,
-    title: "Onigt",
+    title: "ONIGT",
     cat: "Social Media Marketing",
     year: "2025",
     desc: "Contenu créatif pour marque lifestyle — série photo.",
@@ -91,7 +92,7 @@ export const projects = [
   },
   {
     id: 406,
-    title: "Maison Ensemble",
+    title: "MAISON ENSEMBLE",
     cat: "Social Media Marketing",
     year: "2025",
     desc: "Production visuelle pour réseaux sociaux — format carré.",
@@ -159,42 +160,49 @@ export const projects = [
     size: "medium",
     link: "https://cliniquedentairesaada.com/",
   },
-
-  // ═══════════════════════════════════════════
-  // META ADS
-  // ═══════════════════════════════════════════
   {
-    id: 5,
-    title: "DIGITAL CAMPAIGN",
-    cat: "Meta Ads",
-    year: "2026",
-    desc: "Campagne publicitaire performante sur Meta et Google.",
-    img: "/images/realisations/project-05.jpg",
+    id: 106,
+    title: "GROWS",
+    cat: "Sites web",
+    year: "2025",
+    desc: "Plateforme digitale et site corporate pour GROWS.",
+    img: "/images/siteweb/grows.png",
     video: null,
-    size: "wide",
-    link: null,
+    size: "large",
+    link: "https://grows.ma/",
   },
   {
-    id: 11,
-    title: "PERFORMANCE ADS",
-    cat: "Meta Ads",
-    year: "2026",
-    desc: "Création et stratégie média pour publicité à la performance.",
-    img: "/images/realisations/project-11.jpg",
+    id: 107,
+    title: "FIFAP",
+    cat: "Sites web",
+    year: "2025",
+    desc: "Site officiel de la FIFAP — Fédération et organisation professionnelle.",
+    img: "/images/siteweb/fifap.png",
     video: null,
     size: "wide",
-    link: null,
+    link: "https://fifap.org/",
+  },
+  {
+    id: 108,
+    title: "ONIGT",
+    cat: "Sites web",
+    year: "2025",
+    desc: "Site institutionnel pour l'ONIGT — Organisation Nationale des Ingénieurs Géomètres Topographes.",
+    img: "/images/siteweb/onigt.png",
+    video: null,
+    size: "square",
+    link: "https://onigt.ma/",
   },
 
   // ═══════════════════════════════════════════
-  // PRODUCTION AUDIOVISUELLE (21 vidéos)
+  // VIDEOGRAPHIE (21 vidéos)
   // ═══════════════════════════════════════════
 
   // ─── CASA HARRIS (7 vidéos) ───
   {
     id: 200,
     title: "CASA HARRIS 1",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/casa-harris/01.jpg",
@@ -205,7 +213,7 @@ export const projects = [
   {
     id: 201,
     title: "CASA HARRIS 2",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/casa-harris/02.jpg",
@@ -216,7 +224,7 @@ export const projects = [
   {
     id: 202,
     title: "CASA HARRIS 3",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/casa-harris/03.jpg",
@@ -227,7 +235,7 @@ export const projects = [
   {
     id: 203,
     title: "CASA HARRIS 4",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/casa-harris/04.jpg",
@@ -238,7 +246,7 @@ export const projects = [
   {
     id: 204,
     title: "CASA HARRIS 5",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/casa-harris/05.jpg",
@@ -249,7 +257,7 @@ export const projects = [
   {
     id: 205,
     title: "CASA HARRIS 6",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/casa-harris/06.jpg",
@@ -260,7 +268,7 @@ export const projects = [
   {
     id: 206,
     title: "CASA HARRIS 7",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/casa-harris/07.jpg",
@@ -273,7 +281,7 @@ export const projects = [
   {
     id: 210,
     title: "IFDCE 1",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/ifdce/01.jpg",
@@ -284,7 +292,7 @@ export const projects = [
   {
     id: 211,
     title: "IFDCE 2",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/ifdce/02.jpg",
@@ -295,7 +303,7 @@ export const projects = [
   {
     id: 212,
     title: "IFDCE 3",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/ifdce/03.jpg",
@@ -306,7 +314,7 @@ export const projects = [
   {
     id: 213,
     title: "IFDCE 4",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/ifdce/04.jpg",
@@ -317,7 +325,7 @@ export const projects = [
   {
     id: 214,
     title: "IFDCE 5",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/ifdce/05.jpg",
@@ -328,7 +336,7 @@ export const projects = [
   {
     id: 215,
     title: "IFDCE 6",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/ifdce/06.jpg",
@@ -339,7 +347,7 @@ export const projects = [
   {
     id: 216,
     title: "IFDCE 7",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/ifdce/07.jpg",
@@ -350,7 +358,7 @@ export const projects = [
   {
     id: 217,
     title: "IFDCE 8",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/ifdce/08.jpg",
@@ -363,7 +371,7 @@ export const projects = [
   {
     id: 220,
     title: "WORKAURA 1",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/workaura/01.jpg",
@@ -374,7 +382,7 @@ export const projects = [
   {
     id: 221,
     title: "WORKAURA 2",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/workaura/02.jpg",
@@ -385,7 +393,7 @@ export const projects = [
   {
     id: 222,
     title: "WORKAURA 3",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/workaura/03.jpg",
@@ -396,7 +404,7 @@ export const projects = [
   {
     id: 223,
     title: "WORKAURA 4",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/workaura/04.jpg",
@@ -407,7 +415,7 @@ export const projects = [
   {
     id: 224,
     title: "WORKAURA 5",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/workaura/05.jpg",
@@ -418,7 +426,7 @@ export const projects = [
   {
     id: 225,
     title: "WORKAURA 6",
-    cat: "Production audiovisuelle",
+    cat: "Videographie",
     year: "2025",
     desc: null,
     img: "/images/realisations/workaura/06.jpg",

@@ -340,20 +340,6 @@ export default function ServicesHeroSection() {
         <div className="w-[1px] h-6 bg-gradient-to-b from-[#C9A227]/70 to-transparent" />
       </div>
 
-      {/* Marqueur "02 / SERVICES" */}
-      <div
-        className="absolute bottom-6 right-8 hidden md:flex items-center gap-3 pointer-events-none transition-opacity duration-1000"
-        style={{
-          transitionDelay: "1400ms",
-          opacity: mounted ? 1 : 0,
-        }}
-      >
-        <span className="font-display text-[10px] tracking-[0.25em] uppercase text-[#C9A227]/60">
-          02 / SERVICES
-        </span>
-        <div className="w-12 h-[1px] bg-[#C9A227]/40" />
-      </div>
-
       {/* Coins décoratifs */}
       <div className="absolute top-[100px] md:top-[112px] left-6 md:left-10 w-16 h-[1px] bg-[#C9A227]/40 pointer-events-none" />
       <div className="absolute top-[100px] md:top-[112px] left-6 md:left-10 w-[1px] h-16 bg-[#C9A227]/40 pointer-events-none" />

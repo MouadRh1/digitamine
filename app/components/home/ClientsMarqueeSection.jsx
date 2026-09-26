@@ -53,17 +53,20 @@ export default function ClientsMarqueeSection() {
       </div>
 
       <div className="relative">
-        {/* Dégradés latéraux */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-black to-transparent md:w-40" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-black to-transparent md:w-40" />
+        {/* Dégradés latéraux — plus larges pour un fondu progressif */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-black via-black/80 to-transparent md:w-56" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-black via-black/80 to-transparent md:w-56" />
 
         <Swiper
           modules={[Autoplay]}
           slidesPerView="auto"
-          spaceBetween={3}
+          spaceBetween={40}
           loop
-          loopAdditionalSlides={clients.length}
-          speed={5000}
+          loopAdditionalSlides={clients.length * 2}
+          observer
+          observeParents
+          resizeObserver
+          speed={6000}
           autoplay={
             reducedMotion
               ? false
@@ -75,14 +78,15 @@ export default function ClientsMarqueeSection() {
           {clients.map((client, index) => (
             <SwiperSlide key={`${client.name}-${index}`} className="!w-auto">
               <div className="group flex items-center justify-center">
-                {/* Conteneur agrandi : logos 400px / 480px */}
-                <div className="relative flex h-44 w-[280px] items-center justify-center opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 md:h-52 md:w-[460px]">
+                {/* Conteneur agrandi : logos encore plus grands */}
+                <div className="relative flex h-64 w-[420px] items-center justify-center px-4 opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 md:h-[26rem] md:w-[720px] md:px-8">
                   <Image
                     src={client.logo}
                     alt={client.name}
                     fill
-                    sizes="460px"
+                    sizes="(max-width: 768px) 420px, 720px"
                     className="object-contain"
+                    quality={90}
                   />
                 </div>
               </div>
@@ -94,6 +98,10 @@ export default function ClientsMarqueeSection() {
       <style jsx global>{`
         .clients-marquee .swiper-wrapper {
           transition-timing-function: linear !important;
+        }
+        .clients-marquee .swiper-slide {
+          width: auto !important;
+          flex-shrink: 0;
         }
       `}</style>
     </section>

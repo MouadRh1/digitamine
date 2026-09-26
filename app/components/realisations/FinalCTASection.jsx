@@ -2,11 +2,14 @@ import Link from "next/link";
 
 export default function FinalCTASection() {
   return (
-    <section className="relative bg-[#050505] py-24 md:py-32 lg:py-40">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        {/* Titre principal */}
+    <section
+      className="relative left-1/2 w-screen -translate-x-1/2 bg-[#050505] py-24 md:py-32 lg:py-40"
+    >
+      {/* Container collé à gauche — pas de mx-auto, pas de max-width parent hérité */}
+      <div className="w-full pl-6 md:pl-10 lg:pl-16 xl:pl-20 pr-6 md:pr-10 text-left">
+        {/* Titre principal — aligné à gauche */}
         <h2
-          className="font-display tracking-[-0.02em] text-white mb-10 md:mb-14 max-w-[1200px]"
+          className="font-display tracking-[-0.02em] text-white mb-10 md:mb-14 max-w-[1200px] text-left"
           style={{
             fontSize: "clamp(40px, 6.5vw, 104px)",
             lineHeight: 1.02,
@@ -20,28 +23,30 @@ export default function FinalCTASection() {
           complètement différent ?
         </h2>
 
-        {/* CTA */}
-        <Link
-          href="/contact"
-          className="group inline-flex items-center gap-3 font-display text-[13px] md:text-[14px] tracking-[0.05em] uppercase text-[#050505] font-medium px-7 md:px-8 py-4 md:py-5 bg-[#C9A227] hover:bg-[#E6C95C] transition-colors duration-300"
-        >
-          Parler de votre projet
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            className="group-hover:translate-x-[2px] group-hover:-translate-y-[2px] transition-transform duration-300"
+        {/* CTA — aligné à gauche */}
+        <div className="flex justify-start">
+          <Link
+            href="/contact"
+            className="group inline-flex items-center gap-3 font-display text-[13px] md:text-[14px] tracking-[0.05em] uppercase text-[#050505] font-medium px-7 md:px-8 py-4 md:py-5 bg-[#C9A227] hover:bg-[#E6C95C] transition-colors duration-300"
           >
-            <path
-              d="M2 12L12 2M12 2H5M12 2V9"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
+            Parler de votre projet
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              className="group-hover:translate-x-[2px] group-hover:-translate-y-[2px] transition-transform duration-300"
+            >
+              <path
+                d="M2 12L12 2M12 2H5M12 2V9"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
+        </div>
       </div>
     </section>
   );

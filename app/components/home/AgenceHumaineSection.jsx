@@ -6,6 +6,7 @@ import Image from "next/image";
 
 // ═══════════════════════════════════════════
 // HOOK : Détecte quand un élément entre dans le viewport
+// (rejouable à chaque entrée/sortie)
 // ═══════════════════════════════════════════
 function useInView(options = {}) {
   const [isInView, setIsInView] = useState(false);
@@ -24,10 +25,8 @@ function useInView(options = {}) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.disconnect();
-        }
+        // ✅ Se met à jour à CHAQUE entrée ET sortie
+        setIsInView(entry.isIntersecting);
       },
       { threshold: 0.15, ...options }
     );
@@ -42,7 +41,7 @@ function useInView(options = {}) {
 // ═══════════════════════════════════════════
 // REVEAL MASK : Contenu qui sort de sous un masque (slide up)
 // ═══════════════════════════════════════════
-function RevealMask({ children, delay = 0, duration = 1000 }) {
+function RevealMask({ children, delay = 0, duration = 600 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -51,7 +50,7 @@ function RevealMask({ children, delay = 0, duration = 1000 }) {
         className="transition-transform ease-[cubic-bezier(0.65,0,0.35,1)]"
         style={{
           transitionDuration: `${duration}ms`,
-          transitionDelay: `${delay}ms`,
+          transitionDelay: isInView ? `${delay}ms` : "0ms",
           transform: isInView ? "translateY(0%)" : "translateY(110%)",
         }}
       >
@@ -64,7 +63,7 @@ function RevealMask({ children, delay = 0, duration = 1000 }) {
 // ═══════════════════════════════════════════
 // REVEAL FADE : Contenu qui apparaît en fondu + slide
 // ═══════════════════════════════════════════
-function RevealFade({ children, delay = 0, duration = 900 }) {
+function RevealFade({ children, delay = 0, duration = 550 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -73,7 +72,7 @@ function RevealFade({ children, delay = 0, duration = 900 }) {
       className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
       style={{
         transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
+        transitionDelay: isInView ? `${delay}ms` : "0ms",
         opacity: isInView ? 1 : 0,
         transform: isInView ? "translateY(0)" : "translateY(20px)",
       }}
@@ -86,7 +85,7 @@ function RevealFade({ children, delay = 0, duration = 900 }) {
 // ═══════════════════════════════════════════
 // REVEAL SCALE : Contenu qui zoome (parfait pour les images)
 // ═══════════════════════════════════════════
-function RevealScale({ children, delay = 0, duration = 1400 }) {
+function RevealScale({ children, delay = 0, duration = 800 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -95,7 +94,7 @@ function RevealScale({ children, delay = 0, duration = 1400 }) {
       className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)] h-full"
       style={{
         transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
+        transitionDelay: isInView ? `${delay}ms` : "0ms",
         opacity: isInView ? 1 : 0,
         transform: isInView ? "scale(1)" : "scale(1.08)",
       }}
@@ -108,7 +107,7 @@ function RevealScale({ children, delay = 0, duration = 1400 }) {
 // ═══════════════════════════════════════════
 // REVEAL LEFT : Contenu qui slide depuis la gauche
 // ═══════════════════════════════════════════
-function RevealLeft({ children, delay = 0, duration = 900 }) {
+function RevealLeft({ children, delay = 0, duration = 550 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -117,7 +116,7 @@ function RevealLeft({ children, delay = 0, duration = 900 }) {
       className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
       style={{
         transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
+        transitionDelay: isInView ? `${delay}ms` : "0ms",
         opacity: isInView ? 1 : 0,
         transform: isInView ? "translateX(0)" : "translateX(-40px)",
       }}
@@ -134,7 +133,7 @@ export default function AgenceHumaineSection() {
         {/* ═══════════════════════════════════════════
             COLONNE GAUCHE : photo avec effet de zoom
             ═══════════════════════════════════════════ */}
-        <RevealScale delay={100} duration={1400}>
+        <RevealScale delay={50} duration={800}>
           <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] lg:aspect-auto lg:min-h-[560px] xl:min-h-[640px] lg:h-full overflow-hidden">
             <Image
               src="/images/equipe/humaine.jpeg"
@@ -157,7 +156,7 @@ export default function AgenceHumaineSection() {
           <div className="w-full max-w-[600px] mx-auto lg:mx-0">
             {/* Label supérieur — effet de masque */}
             <div className="mb-4 md:mb-6">
-              <RevealMask delay={200} duration={900}>
+              <RevealMask delay={100} duration={550}>
                 <p className="font-display text-[11px] md:text-[12px] tracking-[0.22em] uppercase text-[#C9A227]">
                   Une agence humaine
                 </p>
@@ -174,20 +173,20 @@ export default function AgenceHumaineSection() {
                   fontWeight: 400,
                 }}
               >
-                <RevealMask delay={350} duration={1000}>
+                <RevealMask delay={200} duration={650}>
                   <span className="block">Les idées avancent</span>
                 </RevealMask>
-                <RevealMask delay={500} duration={1000}>
+                <RevealMask delay={300} duration={650}>
                   <span className="block">mieux quand les</span>
                 </RevealMask>
-                <RevealMask delay={650} duration={1000}>
+                <RevealMask delay={400} duration={650}>
                   <span className="block">expertises se parlent.</span>
                 </RevealMask>
               </h2>
             </div>
 
             {/* Paragraphe — fade + slide */}
-            <RevealFade delay={850} duration={900}>
+            <RevealFade delay={500} duration={550}>
               <p className="text-[13px] md:text-[14px] leading-relaxed text-[#A0A0A0] mb-3 md:mb-4 max-w-[540px]">
                 Stratégie, design, développement, vidéo et publicité collaborent
                 dès le départ. Derrière chaque livrable, il y a des échanges, des
@@ -196,7 +195,7 @@ export default function AgenceHumaineSection() {
             </RevealFade>
 
             {/* Lien "Rencontrer l'équipe ↗" — slide depuis la gauche */}
-            <RevealLeft delay={1000} duration={900}>
+            <RevealLeft delay={600} duration={550}>
               <Link
                 href="/about"
                 className="inline-flex items-center gap-2 font-display text-[12px] tracking-[0.08em] uppercase text-[#C9A227] hover:text-[#E6C95C] transition-colors duration-200 mb-10 md:mb-12 group"
@@ -221,7 +220,7 @@ export default function AgenceHumaineSection() {
             </RevealLeft>
 
             {/* Ligne séparatrice + contenu bas — fade avec délai */}
-            <RevealFade delay={1150} duration={900}>
+            <RevealFade delay={700} duration={550}>
               <div className="border-t border-[rgba(201,162,39,0.2)] pt-5 md:pt-6">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-6">
                   {/* Label gauche */}

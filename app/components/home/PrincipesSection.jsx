@@ -43,7 +43,8 @@ const principes = [
 ];
 
 // ═══════════════════════════════════════════
-// HOOK : Détecte l'entrée dans le viewport
+// HOOK : Détecte l'entrée/sortie dans le viewport
+// (rejouable à chaque entrée/sortie)
 // ═══════════════════════════════════════════
 function useInView(options = {}) {
   const [isInView, setIsInView] = useState(false);
@@ -62,10 +63,8 @@ function useInView(options = {}) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.disconnect();
-        }
+        // ✅ Se met à jour à CHAQUE entrée ET sortie
+        setIsInView(entry.isIntersecting);
       },
       { threshold: 0.15, ...options }
     );
@@ -80,7 +79,7 @@ function useInView(options = {}) {
 // ═══════════════════════════════════════════
 // RevealMask : contenu qui sort de sous un masque
 // ═══════════════════════════════════════════
-function RevealMask({ children, delay = 0, duration = 1000 }) {
+function RevealMask({ children, delay = 0, duration = 600 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -89,7 +88,7 @@ function RevealMask({ children, delay = 0, duration = 1000 }) {
         className="transition-transform ease-[cubic-bezier(0.65,0,0.35,1)]"
         style={{
           transitionDuration: `${duration}ms`,
-          transitionDelay: `${delay}ms`,
+          transitionDelay: isInView ? `${delay}ms` : "0ms",
           transform: isInView ? "translateY(0%)" : "translateY(110%)",
         }}
       >
@@ -102,7 +101,7 @@ function RevealMask({ children, delay = 0, duration = 1000 }) {
 // ═══════════════════════════════════════════
 // RevealCard : fade + slide + scale (pour les cards)
 // ═══════════════════════════════════════════
-function RevealCard({ children, delay = 0, duration = 1000 }) {
+function RevealCard({ children, delay = 0, duration = 600 }) {
   const [ref, isInView] = useInView({ threshold: 0.1 });
 
   return (
@@ -111,7 +110,7 @@ function RevealCard({ children, delay = 0, duration = 1000 }) {
       className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)] h-full"
       style={{
         transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
+        transitionDelay: isInView ? `${delay}ms` : "0ms",
         opacity: isInView ? 1 : 0,
         transform: isInView
           ? "translateY(0) scale(1)"
@@ -154,7 +153,7 @@ export default function PrincipesSection() {
           {/* Label */}
           <div className="lg:col-span-3">
             <div className="mb-6 md:mb-8">
-              <RevealMask delay={0} duration={900}>
+              <RevealMask delay={0} duration={550}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-[1px] bg-[#C9A227]" />
                   <p className="font-display text-[14px] md:text-[16px] tracking-[0.22em] uppercase text-[#C9A227]">
@@ -175,10 +174,10 @@ export default function PrincipesSection() {
                 fontWeight: 400,
               }}
             >
-              <RevealMask delay={150} duration={1000}>
+              <RevealMask delay={100} duration={600}>
                 <span className="block">Ce qui guide notre travail,</span>
               </RevealMask>
-              <RevealMask delay={350} duration={1000}>
+              <RevealMask delay={250} duration={600}>
                 <span className="block">avant même de produire.</span>
               </RevealMask>
             </h2>
@@ -192,8 +191,8 @@ export default function PrincipesSection() {
           {principes.map((p, index) => (
             <RevealCard
               key={p.num}
-              delay={600 + index * 120}
-              duration={1000}
+              delay={400 + index * 80}
+              duration={600}
             >
               <article className="group relative overflow-hidden bg-[#0d0d0d] border border-[rgba(201,162,39,0.15)] hover:border-[rgba(201,162,39,0.5)] transition-all duration-500 p-5 md:p-6 min-h-[220px] md:min-h-[250px] flex flex-col justify-between cursor-pointer h-full">
                 {/* Halo doré intérieur */}

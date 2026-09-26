@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function RealisationsHeroSection() {
   const [mousePos, setMousePos] = useState({ x: -500, y: -500 });
@@ -89,20 +88,20 @@ export default function RealisationsHeroSection() {
       </div>
 
       {/* ═══════════════════════════════════════════
-          IMAGE DE FOND + OVERLAYS
+          VIDÉO DE FOND + OVERLAYS
           ═══════════════════════════════════════════ */}
 
-      {/* Image de fond */}
-      <div className="absolute inset-0">
-        <Image
-          src="/images/expertises/graphique_design.png"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover object-center opacity-30"
-          priority
-        />
-      </div>
+      {/* Vidéo de fond */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        poster="/images/expertises/graphique_design.png"
+        className="absolute inset-0 w-full h-full object-cover object-center opacity-35"
+      >
+        <source src="/videos/HERO_.mp4" type="video/mp4" />
+      </video>
 
       {/* Dégradé noir profond (bas → haut) */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/85 to-[#050505]/70 pointer-events-none" />
@@ -142,11 +141,22 @@ export default function RealisationsHeroSection() {
         }}
       />
 
-      {/* Halo doré */}
+      {/* Halo doré milieu-gauche */}
       <div
         className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none opacity-[0.08]"
         style={{
           background: "radial-gradient(circle, rgba(201,162,39,0.6) 0%, transparent 60%)",
+        }}
+      />
+
+      {/* ═══════════════════════════════════════════
+          GRADIENT DORÉ EN BAS — IDENTIQUE AUX HERO HOME & SERVICES
+          ═══════════════════════════════════════════ */}
+      <div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at bottom, rgba(201,162,39,0.28) 0%, transparent 70%)",
         }}
       />
 
@@ -314,20 +324,6 @@ export default function RealisationsHeroSection() {
 
         <div className="w-[1px] h-6 bg-gradient-to-b from-[#C9A227]/70 to-transparent" />
       </div>
-
-      {/* Marqueur "03 / RÉALISATIONS" */}
-      {/* <div
-        className="absolute bottom-6 right-8 hidden md:flex items-center gap-3 pointer-events-none transition-opacity duration-1000"
-        style={{
-          transitionDelay: "1300ms",
-          opacity: mounted ? 1 : 0,
-        }}
-      >
-        <span className="font-display text-[10px] tracking-[0.25em] uppercase text-[#C9A227]/60">
-          03 / RÉALISATIONS
-        </span>
-        <div className="w-12 h-[1px] bg-[#C9A227]/40" />
-      </div> */}
 
       {/* Coins décoratifs */}
       <div className="absolute top-[100px] md:top-[112px] left-6 md:left-10 w-16 h-[1px] bg-[#C9A227]/40 pointer-events-none" />

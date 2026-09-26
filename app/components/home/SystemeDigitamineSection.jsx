@@ -74,6 +74,7 @@ const AUTOPLAY_INTERVAL = 200;
 
 // ═══════════════════════════════════════════
 // HOOK : Détecte quand un élément entre dans le viewport
+// (rejouable à chaque entrée/sortie)
 // ═══════════════════════════════════════════
 function useInView(options = {}) {
   const [isInView, setIsInView] = useState(false);
@@ -85,10 +86,8 @@ function useInView(options = {}) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.disconnect();
-        }
+        // ✅ Se met à jour à CHAQUE entrée ET sortie
+        setIsInView(entry.isIntersecting);
       },
       { threshold: 0.15, ...options }
     );
@@ -103,7 +102,7 @@ function useInView(options = {}) {
 // ═══════════════════════════════════════════
 // COMPOSANT : Reveal avec masque (clip-path)
 // ═══════════════════════════════════════════
-function RevealMask({ children, delay = 0, duration = 1000 }) {
+function RevealMask({ children, delay = 0, duration = 600 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -112,7 +111,7 @@ function RevealMask({ children, delay = 0, duration = 1000 }) {
         className="transition-transform ease-[cubic-bezier(0.65,0,0.35,1)]"
         style={{
           transitionDuration: `${duration}ms`,
-          transitionDelay: `${delay}ms`,
+          transitionDelay: isInView ? `${delay}ms` : "0ms",
           transform: isInView ? "translateY(0%)" : "translateY(110%)",
         }}
       >
@@ -125,7 +124,7 @@ function RevealMask({ children, delay = 0, duration = 1000 }) {
 // ═══════════════════════════════════════════
 // COMPOSANT : Reveal avec fade + slide
 // ═══════════════════════════════════════════
-function RevealFade({ children, delay = 0, duration = 900 }) {
+function RevealFade({ children, delay = 0, duration = 550 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -134,7 +133,7 @@ function RevealFade({ children, delay = 0, duration = 900 }) {
       className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
       style={{
         transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
+        transitionDelay: isInView ? `${delay}ms` : "0ms",
         opacity: isInView ? 1 : 0,
         transform: isInView ? "translateY(0)" : "translateY(30px)",
       }}
@@ -147,7 +146,7 @@ function RevealFade({ children, delay = 0, duration = 900 }) {
 // ═══════════════════════════════════════════
 // COMPOSANT : Reveal avec scale (zoom)
 // ═══════════════════════════════════════════
-function RevealScale({ children, delay = 0, duration = 1200 }) {
+function RevealScale({ children, delay = 0, duration = 700 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -156,7 +155,7 @@ function RevealScale({ children, delay = 0, duration = 1200 }) {
       className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
       style={{
         transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
+        transitionDelay: isInView ? `${delay}ms` : "0ms",
         opacity: isInView ? 1 : 0,
         transform: isInView ? "scale(1)" : "scale(0.9)",
       }}
@@ -169,7 +168,7 @@ function RevealScale({ children, delay = 0, duration = 1200 }) {
 // ═══════════════════════════════════════════
 // COMPOSANT : Reveal depuis la gauche
 // ═══════════════════════════════════════════
-function RevealLeft({ children, delay = 0, duration = 900 }) {
+function RevealLeft({ children, delay = 0, duration = 550 }) {
   const [ref, isInView] = useInView();
 
   return (
@@ -178,7 +177,7 @@ function RevealLeft({ children, delay = 0, duration = 900 }) {
       className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
       style={{
         transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
+        transitionDelay: isInView ? `${delay}ms` : "0ms",
         opacity: isInView ? 1 : 0,
         transform: isInView ? "translateX(0)" : "translateX(-40px)",
       }}
@@ -196,7 +195,10 @@ export default function SystemeDigitamineSection() {
   const sectionRef = useRef(null);
   const tickRef = useRef(0);
 
-  // Détecte l'entrée du composant dans le viewport
+  // ═══════════════════════════════════════════
+  // Détecte l'entrée/sortie du composant
+  // (rejouable — auto-cycle redémarre à chaque retour)
+  // ═══════════════════════════════════════════
   useEffect(() => {
     const node = sectionRef.current;
     if (!node) return;
@@ -204,8 +206,14 @@ export default function SystemeDigitamineSection() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
+          // ✅ Entrée : on lance l'auto-cycle
           setInView(true);
-          observer.unobserve(node);
+          // ✅ Reset pour que l'auto-cycle se rejoue à chaque retour
+          setHasCompleted(false);
+          tickRef.current = 0;
+        } else {
+          // ✅ Sortie : on arrête tout
+          setInView(false);
         }
       },
       { threshold: 0.35 }
@@ -264,7 +272,7 @@ export default function SystemeDigitamineSection() {
           <div className="lg:sticky lg:top-24">
             {/* Label avec masque */}
             <div className="mb-6 md:mb-8">
-              <RevealMask delay={0} duration={1000}>
+              <RevealMask delay={0} duration={600}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-[1px] bg-[#C9A227]" />
                   <p className="font-display text-[14px] md:text-[16px] tracking-[0.22em] uppercase text-[#C9A227]">
@@ -284,10 +292,10 @@ export default function SystemeDigitamineSection() {
                   fontWeight: 400,
                 }}
               >
-                <RevealMask delay={150} duration={1100}>
+                <RevealMask delay={100} duration={700}>
                   <span className="block">Une méthode claire.</span>
                 </RevealMask>
-                <RevealMask delay={300} duration={1100}>
+                <RevealMask delay={200} duration={700}>
                   <span className="block text-[#C9A227]">
                     Cinq étapes qui travaillent ensemble.
                   </span>
@@ -296,14 +304,14 @@ export default function SystemeDigitamineSection() {
             </div>
 
             {/* Paragraphe avec fade */}
-            <RevealFade delay={500} duration={900}>
+            <RevealFade delay={300} duration={550}>
               <p className="text-[14px] md:text-[15px] leading-relaxed text-[#A0A0A0] mb-10 md:mb-12 max-w-[480px]">
                 Nous ne commençons pas par publier. Nous commençons par comprendre.
               </p>
             </RevealFade>
 
             {/* ═══ LA ROUE — animation scale au scroll ═══ */}
-            <RevealScale delay={700} duration={1400}>
+            <RevealScale delay={400} duration={800}>
               <div
                 className="relative w-full max-w-[520px] aspect-square mx-auto lg:mx-0"
                 onMouseEnter={() => setIsHovering(true)}
@@ -421,7 +429,7 @@ export default function SystemeDigitamineSection() {
               ═══════════════════════════════════════════ */}
           <div className="relative pl-0 md:pl-10" onMouseLeave={handleLeave}>
             {/* Ligne verticale décorative */}
-            <RevealLeft delay={400} duration={1200}>
+            <RevealLeft delay={250} duration={700}>
               <div className="absolute left-0 top-0 bottom-0 w-3 hidden md:flex flex-col items-center">
                 <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-b from-transparent via-[rgba(201,162,39,0.4)] to-transparent" />
                 {steps.map((_, i) => {
@@ -448,7 +456,7 @@ export default function SystemeDigitamineSection() {
             {steps.map((step, i) => {
               const isActive = active === i;
               return (
-                <RevealLeft key={step.num} delay={600 + i * 120} duration={900}>
+                <RevealLeft key={step.num} delay={350 + i * 80} duration={550}>
                   <div
                     className="relative grid grid-cols-12 gap-4 md:gap-6 py-6 md:py-8 border-t border-[rgba(201,162,39,0.15)] transition-all duration-500 ease-out cursor-pointer"
                     onMouseEnter={() => {
@@ -516,7 +524,7 @@ export default function SystemeDigitamineSection() {
             })}
 
             {/* Ligne de fermeture */}
-            <RevealFade delay={1200} duration={600}>
+            <RevealFade delay={700} duration={500}>
               <div className="border-t border-[rgba(201,162,39,0.15)]" />
             </RevealFade>
           </div>

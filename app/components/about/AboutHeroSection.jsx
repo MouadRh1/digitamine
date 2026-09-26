@@ -151,6 +151,17 @@ export default function AboutHeroSection() {
       />
 
       {/* ═══════════════════════════════════════════
+          GRADIENT DORÉ EN BAS — IDENTIQUE AUX AUTRES HERO
+          ═══════════════════════════════════════════ */}
+      <div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at bottom, rgba(201,162,39,0.28) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* ═══════════════════════════════════════════
           CONTENU PRINCIPAL — ANIMÉ
           ═══════════════════════════════════════════ */}
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10 w-full py-8 md:py-10">
@@ -284,7 +295,7 @@ export default function AboutHeroSection() {
 
           {/* ─── Colonne droite : 2 photos superposées — animées ─── */}
           <div
-            className="lg:col-span-5 relative h-[320px] md:h-[400px] lg:h-[440px] xl:h-[480px] transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
+            className="lg:col-span-5 relative h-[320px] md:h-[400px] lg:h-[460px] xl:h-[520px] transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
             style={{
               transitionDuration: "1400ms",
               transitionDelay: "400ms",
@@ -305,13 +316,16 @@ export default function AboutHeroSection() {
               <div className="absolute inset-0 bg-[#050505]/10 pointer-events-none" />
             </div>
 
-            {/* Photo secondaire */}
-            <div className="absolute bottom-0 right-0 w-[55%] h-[45%] overflow-hidden z-10 border border-[rgba(201,162,39,0.3)]">
+            {/* Photo secondaire — FORMAT PORTRAIT 3:4 */}
+            <div
+              className="absolute bottom-0 right-0 w-[38%] overflow-hidden z-10 border border-[rgba(201,162,39,0.3)]"
+              style={{ aspectRatio: "3/4" }}
+            >
               <Image
                 src="/images/equipe/NABILL.JPG"
                 alt="Équipe Digitamine sur le terrain"
                 fill
-                sizes="(max-width: 1024px) 100vw, 25vw"
+                sizes="(max-width: 1024px) 40vw, 18vw"
                 className="object-cover object-top"
               />
             </div>

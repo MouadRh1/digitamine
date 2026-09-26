@@ -120,9 +120,23 @@ export default function Header() {
 
           {/* ─── CTA desktop ─── */}
           <div className="hidden md:block">
-            <Link href="/contact" className="btn-primary text-[12px]">
-              Démarrer un projet
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <Link
+              href="/contact"
+              className="group relative inline-flex items-center gap-3 font-display text-[11px] lg:text-[12px] tracking-[0.15em] uppercase text-[#C9A227] border border-[#C9A227]/50 hover:border-[#C9A227] px-5 lg:px-6 py-3 overflow-hidden transition-colors duration-500 hover:text-[#050505]"
+              style={{ fontWeight: 500 }}
+            >
+              {/* Fond doré qui glisse de gauche à droite */}
+              <span className="absolute inset-0 bg-[#C9A227] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" />
+
+              {/* Contenu au-dessus du fond animé */}
+              <span className="relative z-10">Démarrer un projet</span>
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                className="relative z-10 group-hover:translate-x-1 transition-transform duration-300"
+              >
                 <path
                   d="M2 6h8M7 3l3 3-3 3"
                   stroke="currentColor"
@@ -200,13 +214,25 @@ export default function Header() {
             );
           })}
 
+          {/* CTA mobile — même design que desktop */}
           <Link
             href="/contact"
-            className="btn-primary mt-6 text-[12px]"
             onClick={() => setMobileOpen(false)}
+            className="group relative mt-8 inline-flex items-center gap-3 font-display text-[12px] tracking-[0.15em] uppercase text-[#C9A227] border border-[#C9A227]/50 hover:border-[#C9A227] px-7 py-4 overflow-hidden transition-colors duration-500 hover:text-[#050505]"
+            style={{ fontWeight: 500 }}
           >
-            Démarrer un projet
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            {/* Fond doré qui glisse de gauche à droite */}
+            <span className="absolute inset-0 bg-[#C9A227] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" />
+
+            {/* Contenu au-dessus du fond animé */}
+            <span className="relative z-10">Démarrer un projet</span>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+              className="relative z-10 group-hover:translate-x-1 transition-transform duration-300"
+            >
               <path
                 d="M2 6h8M7 3l3 3-3 3"
                 stroke="currentColor"
