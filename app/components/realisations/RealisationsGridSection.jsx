@@ -1,17 +1,85 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { categories, projects, aspectMap } from "@/app/data/realisations";
 
 export default function RealisationsGridSection() {
   const [activeFilter, setActiveFilter] = useState("Tout");
+  const [lightbox, setLightbox] = useState(null); // { index, items }
 
   const filtered =
     activeFilter === "Tout"
       ? projects
       : projects.filter((p) => p.cat === activeFilter);
+
+  // Récupère uniquement les projets SMMA pour la navigation du lightbox
+  const smmaProjects = filtered.filter(
+    (p) => p.cat === "Social Media Marketing" && !p.video
+  );
+
+  // ─── Gestion du clavier (Esc / ← / →) ───
+  useEffect(() => {
+    if (!lightbox) return;
+
+    const onKey = (e) => {
+      if (e.key === "Escape") setLightbox(null);
+      if (e.key === "ArrowRight") {
+        setLightbox((prev) =>
+          prev
+            ? { ...prev, index: (prev.index + 1) % smmaProjects.length }
+            : null
+        );
+      }
+      if (e.key === "ArrowLeft") {
+        setLightbox((prev) =>
+          prev
+            ? {
+                ...prev,
+                index:
+                  (prev.index - 1 + smmaProjects.length) % smmaProjects.length,
+              }
+            : null
+        );
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [lightbox, smmaProjects.length]);
+
+  const openLightbox = (projectId) => {
+    const idx = smmaProjects.findIndex((p) => p.id === projectId);
+    if (idx !== -1) setLightbox({ index: idx });
+  };
+
+  const closeLightbox = () => setLightbox(null);
+
+  const goNext = () => {
+    setLightbox((prev) =>
+      prev ? { ...prev, index: (prev.index + 1) % smmaProjects.length } : null
+    );
+  };
+
+  const goPrev = () => {
+    setLightbox((prev) =>
+      prev
+        ? {
+            ...prev,
+            index:
+              (prev.index - 1 + smmaProjects.length) % smmaProjects.length,
+          }
+        : null
+    );
+  };
+
+  const current = lightbox ? smmaProjects[lightbox.index] : null;
 
   return (
     <>
@@ -219,7 +287,7 @@ export default function RealisationsGridSection() {
                           controls
                           playsInline
                           preload="metadata"
-                          className="absolute inset-0 w-full h-full object-cover"
+                          className="video-media absolute inset-0 w-full h-full object-cover"
                         >
                           <source src={p.video} type="video/mp4" />
                           Votre navigateur ne supporte pas la vidéo.
@@ -319,7 +387,7 @@ export default function RealisationsGridSection() {
                           controls
                           playsInline
                           preload="metadata"
-                          className="absolute inset-0 w-full h-full object-cover"
+                          className="video-media absolute inset-0 w-full h-full object-cover"
                         >
                           <source src={p.video} type="video/mp4" />
                           Votre navigateur ne supporte pas la vidéo.
@@ -395,28 +463,15 @@ export default function RealisationsGridSection() {
               }
 
               /* ═══════════════════════════════════════════
-                  🖼️ IMAGE STANDARD
+                  🖼️ IMAGE STANDARD — SMMA ouvrent le lightbox, autres → Link
                   ═══════════════════════════════════════════ */
-              return (
-                <Link
-                  key={p.id}
-                  href={`/realisations/${p.id}`}
-                  className="group block break-inside-avoid relative overflow-hidden bg-[#101010] mb-4 md:mb-5 border border-[rgba(201,162,39,0.12)] hover:border-[rgba(201,162,39,0.5)] transition-all duration-500"
-                  style={{
-                    aspectRatio: isSocialMedia
-                      ? "9/16"
-                      : aspectMap[p.size] || "4/3",
-                  }}
-                >
+              const imageContent = (
+                <>
                   <Image
                     src={p.img}
                     alt={p.title}
                     fill
-                    sizes={
-                      isSocialMedia
-                        ? "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        : "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    }
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
                   />
 
@@ -469,21 +524,68 @@ export default function RealisationsGridSection() {
                   </div>
 
                   <div className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center border border-[rgba(201,162,39,0.4)] bg-[rgba(5,5,5,0.7)] backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 z-20">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path
-                        d="M2 10L10 2M10 2H5M10 2V7"
-                        stroke="#C9A227"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    {isSocialMedia ? (
+                      /* Icône "zoom / loupe" pour SMMA */
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                        <circle cx="11" cy="11" r="7" stroke="#C9A227" strokeWidth="1.8" />
+                        <line x1="16" y1="16" x2="21" y2="21" stroke="#C9A227" strokeWidth="1.8" strokeLinecap="round" />
+                        <line x1="11" y1="8" x2="11" y2="14" stroke="#C9A227" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="8" y1="11" x2="14" y2="11" stroke="#C9A227" strokeWidth="1.5" strokeLinecap="round" />
+                      </svg>
+                    ) : (
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <path
+                          d="M2 10L10 2M10 2H5M10 2V7"
+                          stroke="#C9A227"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
                   </div>
 
                   <span className="absolute bottom-3 left-3 w-4 h-[1px] bg-[#C9A227]/70 group-hover:bg-[#C9A227] transition-colors duration-500 z-20" />
                   <span className="absolute bottom-3 left-3 w-[1px] h-4 bg-[#C9A227]/70 group-hover:bg-[#C9A227] transition-colors duration-500 z-20" />
 
                   <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#C9A227] group-hover:w-full transition-all duration-700 ease-out z-20" />
+                </>
+              );
+
+              const commonClasses =
+                "group block break-inside-avoid relative overflow-hidden bg-[#101010] mb-4 md:mb-5 border border-[rgba(201,162,39,0.12)] hover:border-[rgba(201,162,39,0.5)] transition-all duration-500 cursor-pointer";
+
+              const commonStyle = {
+                aspectRatio: isSocialMedia
+                  ? "9/16"
+                  : aspectMap[p.size] || "4/3",
+              };
+
+              // SMMA → bouton qui ouvre le lightbox
+              if (isSocialMedia) {
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => openLightbox(p.id)}
+                    className={`${commonClasses} text-left w-full`}
+                    style={commonStyle}
+                    aria-label={`Voir ${p.title} en grand`}
+                  >
+                    {imageContent}
+                  </button>
+                );
+              }
+
+              // Autres → Link classique
+              return (
+                <Link
+                  key={p.id}
+                  href={`/realisations/${p.id}`}
+                  className={commonClasses}
+                  style={commonStyle}
+                >
+                  {imageContent}
                 </Link>
               );
             })}
@@ -498,6 +600,172 @@ export default function RealisationsGridSection() {
           )}
         </div>
       </section>
+
+      {/* ═══════════════════════════════════════════
+          LIGHTBOX MODAL — pour Social Media Marketing
+          ═══════════════════════════════════════════ */}
+      {lightbox && current && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
+          style={{
+            background: "rgba(5,5,5,0.96)",
+            backdropFilter: "blur(12px)",
+          }}
+          onClick={closeLightbox}
+        >
+          {/* Bouton fermer */}
+          <button
+            type="button"
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 md:top-6 md:right-6 z-20 w-12 h-12 flex items-center justify-center border border-[rgba(201,162,39,0.4)] bg-[rgba(5,5,5,0.8)] hover:bg-[#C9A227] hover:border-[#C9A227] transition-all duration-300 group"
+            aria-label="Fermer"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              className="text-[#C9A227] group-hover:text-[#050505] transition-colors duration-300"
+            >
+              <path
+                d="M3 3L15 15M15 3L3 15"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+
+          {/* Compteur */}
+          <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20 flex items-center gap-3">
+            <span className="font-display text-[11px] md:text-[12px] tracking-[0.25em] uppercase text-[#C9A227]">
+              {String(lightbox.index + 1).padStart(2, "0")} / {String(smmaProjects.length).padStart(2, "0")}
+            </span>
+            <div className="w-12 h-[1px] bg-[#C9A227]/50" />
+          </div>
+
+          {/* Flèche gauche */}
+          {smmaProjects.length > 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                goPrev();
+              }}
+              className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center border border-[rgba(201,162,39,0.4)] bg-[rgba(5,5,5,0.8)] hover:bg-[#C9A227] hover:border-[#C9A227] transition-all duration-300 group"
+              aria-label="Précédent"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                className="text-[#C9A227] group-hover:text-[#050505] transition-colors duration-300"
+              >
+                <path
+                  d="M12 4L6 10l6 6"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          )}
+
+          {/* Flèche droite */}
+          {smmaProjects.length > 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                goNext();
+              }}
+              className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center border border-[rgba(201,162,39,0.4)] bg-[rgba(5,5,5,0.8)] hover:bg-[#C9A227] hover:border-[#C9A227] transition-all duration-300 group"
+              aria-label="Suivant"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                className="text-[#C9A227] group-hover:text-[#050505] transition-colors duration-300"
+              >
+                <path
+                  d="M8 4l6 6-6 6"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          )}
+
+          {/* Image centrale */}
+          <div
+            className="relative max-w-[90vw] max-h-[85vh] w-auto h-auto flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={current.img}
+              alt={current.title}
+              width={1200}
+              height={1600}
+              sizes="90vw"
+              className="max-w-full max-h-[85vh] w-auto h-auto object-contain"
+              priority
+            />
+
+            {/* Coins décoratifs dorés */}
+            <span className="absolute -top-2 -left-2 w-6 h-[1px] bg-[#C9A227]" />
+            <span className="absolute -top-2 -left-2 w-[1px] h-6 bg-[#C9A227]" />
+            <span className="absolute -bottom-2 -right-2 w-6 h-[1px] bg-[#C9A227]" />
+            <span className="absolute -bottom-2 -right-2 w-[1px] h-6 bg-[#C9A227]" />
+          </div>
+
+          {/* Titre + description en bas */}
+          <div className="absolute bottom-4 md:bottom-8 left-0 right-0 flex justify-center px-4 pointer-events-none">
+            <div className="max-w-[600px] text-center">
+              <p className="font-display text-[10px] md:text-[11px] tracking-[0.25em] uppercase text-[#C9A227] mb-2">
+                {current.cat} · {current.year}
+              </p>
+              <h3
+                className="font-display tracking-tight text-white mb-1"
+                style={{
+                  fontSize: "clamp(18px, 2vw, 26px)",
+                  fontWeight: 500,
+                }}
+              >
+                {current.title}
+              </h3>
+              {current.desc && (
+                <p className="text-[12px] md:text-[13px] leading-relaxed text-white/70">
+                  {current.desc}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ═══════════════════════════════════════════
+          CSS plein écran pour vidéos
+          ═══════════════════════════════════════════ */}
+      <style jsx global>{`
+        video.video-media:fullscreen,
+        video.video-media:-webkit-full-screen,
+        video.video-media:-moz-full-screen {
+          object-fit: contain !important;
+          background: #000;
+          width: 100% !important;
+          height: 100% !important;
+        }
+
+        video.video-media::backdrop {
+          background: #000;
+        }
+      `}</style>
     </>
   );
 }

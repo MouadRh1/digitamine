@@ -2,10 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-
-import "swiper/css";
 
 const clients = [
   { name: "Client 1", logo: "/images/logo/1.png" },
@@ -28,6 +24,11 @@ const clients = [
   { name: "Client 18", logo: "/images/logo/18.png" },
   { name: "Client 19", logo: "/images/logo/19.png" },
 ];
+
+// Deux copies identiques mises bout à bout : quand la première sort de
+// l'écran par la gauche, la seconde prend exactement sa place — boucle
+// invisible garantie, sans calcul de largeur ni dépendance externe.
+const track = [...clients, ...clients];
 
 export default function ClientsMarqueeSection() {
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -53,55 +54,51 @@ export default function ClientsMarqueeSection() {
       </div>
 
       <div className="relative">
-        {/* Dégradés latéraux — plus larges pour un fondu progressif */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-black via-black/80 to-transparent md:w-56" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-black via-black/80 to-transparent md:w-56" />
+        {/* Dégradés latéraux */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-black to-transparent md:w-40" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-black to-transparent md:w-40" />
 
-        <Swiper
-          modules={[Autoplay]}
-          slidesPerView="auto"
-          spaceBetween={40}
-          loop
-          loopAdditionalSlides={clients.length * 2}
-          observer
-          observeParents
-          resizeObserver
-          speed={6000}
-          autoplay={
-            reducedMotion
-              ? false
-              : { delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true }
-          }
-          allowTouchMove={false}
-          className="clients-swiper"
-        >
-          {clients.map((client, index) => (
-            <SwiperSlide key={`${client.name}-${index}`} className="!w-auto">
-              <div className="group flex items-center justify-center">
-                {/* Conteneur agrandi : logos encore plus grands */}
-                <div className="relative flex h-64 w-[420px] items-center justify-center px-4 opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 md:h-[26rem] md:w-[720px] md:px-8">
+        <div className="marquee-viewport overflow-hidden">
+          <div
+            className={`marquee-track flex w-max items-center ${
+              reducedMotion ? "" : "animate-marquee"
+            }`}
+          >
+            {track.map((client, index) => (
+              <div
+                key={`${client.name}-${index}`}
+                className="group flex shrink-0 items-center justify-center px-6 md:px-7"
+              >
+                {/* Logos agrandis */}
+                <div className="relative flex h-40 w-[360px] items-center justify-center opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 md:h-68 md:w-[420px]">
                   <Image
                     src={client.logo}
                     alt={client.name}
                     fill
-                    sizes="(max-width: 768px) 420px, 720px"
+                    sizes="420px"
                     className="object-contain"
-                    quality={90}
                   />
                 </div>
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+            ))}
+          </div>
+        </div>
       </div>
 
       <style jsx global>{`
-        .clients-marquee .swiper-wrapper {
-          transition-timing-function: linear !important;
+        .animate-marquee {
+          animation: clients-marquee-scroll 32s linear infinite;
         }
-        .clients-marquee .swiper-slide {
-          width: auto !important;
-          flex-shrink: 0;
+
+        @keyframes clients-marquee-scroll {
+          from {
+            transform: translateX(0);
+          }
+          to {
+            /* La liste est dupliquée x2 : décaler exactement de la moitié
+               fait boucler sans à-coup ni saut visible. */
+            transform: translateX(-50%);
+          }
         }
       `}</style>
     </section>
