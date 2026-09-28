@@ -7,7 +7,6 @@ const nextConfig = {
         hostname: 'images.unsplash.com',
         port: '',
         pathname: '/**',
-        // pas de `search` → tous les query params sont autorisés
       },
     ],
   },

@@ -156,7 +156,7 @@ export default function ServicesHeroSection() {
           {/* ─── Colonne gauche ─── */}
           <div className="lg:col-span-9">
             {/* Label supérieur */}
-            <div className="overflow-hidden mb-6 md:mb-8">
+            {/* <div className="overflow-hidden mb-6 md:mb-8">
               <div
                 className="flex items-center gap-3 transition-transform ease-[cubic-bezier(0.65,0,0.35,1)]"
                 style={{
@@ -170,7 +170,7 @@ export default function ServicesHeroSection() {
                   Services
                 </span>
               </div>
-            </div>
+            </div> */}
 
             {/* Titre — 4 lignes en cascade */}
             <h1

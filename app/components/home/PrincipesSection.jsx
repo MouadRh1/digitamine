@@ -1,44 +1,44 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import SVG3DIcon from "./SVG3DIcon";
+import { Target, Brain, Layers, Users, BarChart3, User } from "lucide-react";
 
 const principes = [
   {
     num: "01",
     title: "La stratégie avant la production",
     tag: "Priorité",
-    svgPath: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+    Icon: Target,
   },
   {
     num: "02",
     title: "La clarté avant la complexité",
     tag: "Méthode",
-    svgPath: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2z"/></svg>`,
+    Icon: Brain,
   },
   {
     num: "03",
     title: "La cohérence avant la quantité",
     tag: "Qualité",
-    svgPath: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
+    Icon: Layers,
   },
   {
     num: "04",
     title: "La collaboration, pas l'exécution silencieuse",
     tag: "Équipe",
-    svgPath: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+    Icon: Users,
   },
   {
     num: "05",
     title: "Des décisions adaptées à la réalité",
     tag: "Pragmatisme",
-    svgPath: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>`,
+    Icon: BarChart3,
   },
   {
     num: "06",
     title: "L'humain derrière la marque",
     tag: "Vision",
-    svgPath: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+    Icon: User,
   },
 ];
 
@@ -188,64 +188,67 @@ export default function PrincipesSection() {
             GRILLE : cards avec animation en cascade
             ═══════════════════════════════════════════ */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-          {principes.map((p, index) => (
-            <RevealCard
-              key={p.num}
-              delay={400 + index * 80}
-              duration={600}
-            >
-              <article className="group relative overflow-hidden bg-[#0d0d0d] border border-[rgba(201,162,39,0.15)] hover:border-[rgba(201,162,39,0.5)] transition-all duration-500 p-5 md:p-6 min-h-[220px] md:min-h-[250px] flex flex-col justify-between cursor-pointer h-full">
-                {/* Halo doré intérieur */}
-                <div
-                  className="absolute -bottom-32 -right-32 w-[300px] h-[300px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-                  style={{
-                    background: "radial-gradient(circle, rgba(201,162,39,0.15) 0%, transparent 70%)",
-                  }}
-                />
-
-                {/* Ligne supérieure : numéro + tag */}
-                <div className="relative z-10 flex items-start justify-between">
-                  {/* <span className="font-display text-[12px] md:text-[13px] tracking-widest text-[#C9A227]">
-                    {p.num}
-                  </span> */}
-                  <span className="font-display text-[9px] md:text-[10px] tracking-[0.2em] uppercase text-[#C9A227]/70 group-hover:text-[#C9A227] transition-colors duration-300 border border-[rgba(201,162,39,0.25)] px-2 py-0.5">
-                    {p.tag}
-                  </span>
-                </div>
-
-                {/* Icône 3D au centre */}
-                <div className="relative z-10 flex-1 flex items-center justify-center py-4">
-                  <div className="relative w-[60px] h-[60px] flex items-center justify-center">
-                    {/* Cercles concentriques animés */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <span className="absolute w-[52px] h-[52px] rounded-full border border-[rgba(201,162,39,0.2)] group-hover:border-[rgba(201,162,39,0.5)] transition-colors duration-500" />
-                      <span className="absolute w-[68px] h-[68px] rounded-full border border-[rgba(201,162,39,0.1)] group-hover:border-[rgba(201,162,39,0.3)] transition-colors duration-700" />
-                    </div>
-
-                    {/* Composant 3D (client-only) */}
-                    <SVG3DIcon svg={p.svgPath} size={52} />
-                  </div>
-                </div>
-
-                {/* Titre en bas */}
-                <div className="relative z-10">
-                  <h3
-                    className="font-display tracking-tight text-white group-hover:text-[#C9A227] transition-colors duration-500"
+          {principes.map((p, index) => {
+            const Icon = p.Icon;
+            return (
+              <RevealCard
+                key={p.num}
+                delay={400 + index * 80}
+                duration={600}
+              >
+                <article className="group relative overflow-hidden bg-[#0d0d0d] border border-[rgba(201,162,39,0.15)] hover:border-[rgba(201,162,39,0.5)] transition-all duration-500 p-5 md:p-6 min-h-[220px] md:min-h-[250px] flex flex-col justify-between cursor-pointer h-full">
+                  {/* Halo doré intérieur */}
+                  <div
+                    className="absolute -bottom-32 -right-32 w-[300px] h-[300px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700"
                     style={{
-                      fontSize: "clamp(14px, 1.3vw, 18px)",
-                      fontWeight: 500,
-                      lineHeight: 1.2,
+                      background: "radial-gradient(circle, rgba(201,162,39,0.15) 0%, transparent 70%)",
                     }}
-                  >
-                    {p.title}
-                  </h3>
-                </div>
+                  />
 
-                {/* Ligne dorée animée en bas */}
-                <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#C9A227] group-hover:w-full transition-all duration-700 ease-out" />
-              </article>
-            </RevealCard>
-          ))}
+                  {/* Ligne supérieure : numéro + tag */}
+                  <div className="relative z-10 flex items-start justify-between">
+                    <span className="font-display text-[9px] md:text-[10px] tracking-[0.2em] uppercase text-[#C9A227]/70 group-hover:text-[#C9A227] transition-colors duration-300 border border-[rgba(201,162,39,0.25)] px-2 py-0.5">
+                      {p.tag}
+                    </span>
+                  </div>
+
+                  {/* Icône simple (lucide-react) */}
+                  <div className="relative z-10 flex-1 flex items-center justify-center py-4">
+                    <div className="relative w-[60px] h-[60px] flex items-center justify-center">
+                      {/* Cercles concentriques animés */}
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <span className="absolute w-[52px] h-[52px] rounded-full border border-[rgba(201,162,39,0.2)] group-hover:border-[rgba(201,162,39,0.5)] transition-colors duration-500" />
+                        <span className="absolute w-[68px] h-[68px] rounded-full border border-[rgba(201,162,39,0.1)] group-hover:border-[rgba(201,162,39,0.3)] transition-colors duration-700" />
+                      </div>
+
+                      <Icon
+                        className="relative z-10 text-[#C9A227] group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(201,162,39,0.5)] transition-all duration-500"
+                        size={26}
+                        strokeWidth={1.75}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Titre en bas */}
+                  <div className="relative z-10">
+                    <h3
+                      className="font-display tracking-tight text-white group-hover:text-[#C9A227] transition-colors duration-500"
+                      style={{
+                        fontSize: "clamp(14px, 1.3vw, 18px)",
+                        fontWeight: 500,
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {p.title}
+                    </h3>
+                  </div>
+
+                  {/* Ligne dorée animée en bas */}
+                  <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#C9A227] group-hover:w-full transition-all duration-700 ease-out" />
+                </article>
+              </RevealCard>
+            );
+          })}
         </div>
       </div>
     </section>
