@@ -1,22 +1,55 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { categories, projects, aspectMap } from "@/app/data/realisations";
 
+// ═══════════════════════════════════════════
+// SHUFFLE : mélange un tableau de manière aléatoire (Fisher-Yates)
+// ═══════════════════════════════════════════
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Catégories qui ouvrent le lightbox (photos uniquement)
+const LIGHTBOX_CATEGORIES = ["Social Media Marketing", "Photographie"];
+
 export default function RealisationsGridSection() {
   const [activeFilter, setActiveFilter] = useState("Tout");
-  const [lightbox, setLightbox] = useState(null); // { index, items }
+  const [lightbox, setLightbox] = useState(null);
+  const [shuffledProjects, setShuffledProjects] = useState([]);
 
-  const filtered =
-    activeFilter === "Tout"
-      ? projects
-      : projects.filter((p) => p.cat === activeFilter);
+  // ═══════════════════════════════════════════
+  // Mélange UNE SEULE FOIS au montage côté client
+  // ═══════════════════════════════════════════
+  useEffect(() => {
+    setShuffledProjects(shuffleArray(projects));
+  }, []);
 
-  // Récupère uniquement les projets SMMA pour la navigation du lightbox
-  const smmaProjects = filtered.filter(
-    (p) => p.cat === "Social Media Marketing" && !p.video
+  // Projets filtrés par catégorie (avec ordre mélangé)
+  const filtered = useMemo(() => {
+    if (shuffledProjects.length === 0) return [];
+    return activeFilter === "Tout"
+      ? shuffledProjects
+      : shuffledProjects.filter((p) => p.cat === activeFilter);
+  }, [activeFilter, shuffledProjects]);
+
+  // ═══════════════════════════════════════════
+  // Projets "photo" qui ouvrent le lightbox
+  // (SMMA + Photographie — sans vidéo)
+  // ═══════════════════════════════════════════
+  const lightboxProjects = useMemo(
+    () =>
+      filtered.filter(
+        (p) => LIGHTBOX_CATEGORIES.includes(p.cat) && !p.video
+      ),
+    [filtered]
   );
 
   // ─── Gestion du clavier (Esc / ← / →) ───
@@ -28,7 +61,7 @@ export default function RealisationsGridSection() {
       if (e.key === "ArrowRight") {
         setLightbox((prev) =>
           prev
-            ? { ...prev, index: (prev.index + 1) % smmaProjects.length }
+            ? { ...prev, index: (prev.index + 1) % lightboxProjects.length }
             : null
         );
       }
@@ -38,7 +71,8 @@ export default function RealisationsGridSection() {
             ? {
                 ...prev,
                 index:
-                  (prev.index - 1 + smmaProjects.length) % smmaProjects.length,
+                  (prev.index - 1 + lightboxProjects.length) %
+                  lightboxProjects.length,
               }
             : null
         );
@@ -52,10 +86,10 @@ export default function RealisationsGridSection() {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [lightbox, smmaProjects.length]);
+  }, [lightbox, lightboxProjects.length]);
 
   const openLightbox = (projectId) => {
-    const idx = smmaProjects.findIndex((p) => p.id === projectId);
+    const idx = lightboxProjects.findIndex((p) => p.id === projectId);
     if (idx !== -1) setLightbox({ index: idx });
   };
 
@@ -63,7 +97,9 @@ export default function RealisationsGridSection() {
 
   const goNext = () => {
     setLightbox((prev) =>
-      prev ? { ...prev, index: (prev.index + 1) % smmaProjects.length } : null
+      prev
+        ? { ...prev, index: (prev.index + 1) % lightboxProjects.length }
+        : null
     );
   };
 
@@ -73,13 +109,14 @@ export default function RealisationsGridSection() {
         ? {
             ...prev,
             index:
-              (prev.index - 1 + smmaProjects.length) % smmaProjects.length,
+              (prev.index - 1 + lightboxProjects.length) %
+              lightboxProjects.length,
           }
         : null
     );
   };
 
-  const current = lightbox ? smmaProjects[lightbox.index] : null;
+  const current = lightbox ? lightboxProjects[lightbox.index] : null;
 
   return (
     <>
@@ -139,6 +176,11 @@ export default function RealisationsGridSection() {
               const isSiteWeb = p.cat === "Sites web";
               const isCouvertureMedia = p.cat === "Couverture Media";
               const isSocialMedia = p.cat === "Social Media Marketing";
+              const isPhotographie = p.cat === "Photographie";
+
+              // ✅ Toutes les catégories "photo" qui ouvrent le lightbox
+              const opensLightbox =
+                (isSocialMedia || isPhotographie) && !hasVideo;
 
               /* ═══════════════════════════════════════════
                   🖥️ SITE WEB — Mockup navigateur
@@ -273,7 +315,7 @@ export default function RealisationsGridSection() {
               }
 
               /* ═══════════════════════════════════════════
-                  🎬 VIDÉO COUVERTURE MEDIA — Format paysage 16:9 (YouTube style)
+                  🎬 VIDÉO COUVERTURE MEDIA — Format paysage 16:9
                   ═══════════════════════════════════════════ */
               if (hasVideo && isCouvertureMedia) {
                 return (
@@ -463,7 +505,7 @@ export default function RealisationsGridSection() {
               }
 
               /* ═══════════════════════════════════════════
-                  🖼️ IMAGE STANDARD — SMMA ouvrent le lightbox, autres → Link
+                  🖼️ IMAGE STANDARD — SMMA + Photographie → lightbox
                   ═══════════════════════════════════════════ */
               const imageContent = (
                 <>
@@ -472,7 +514,7 @@ export default function RealisationsGridSection() {
                     alt={p.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
+                    className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-110"
                   />
 
                   <div
@@ -524,8 +566,8 @@ export default function RealisationsGridSection() {
                   </div>
 
                   <div className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center border border-[rgba(201,162,39,0.4)] bg-[rgba(5,5,5,0.7)] backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 z-20">
-                    {isSocialMedia ? (
-                      /* Icône "zoom / loupe" pour SMMA */
+                    {opensLightbox ? (
+                      /* Icône "loupe" pour SMMA + Photographie */
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
                         <circle cx="11" cy="11" r="7" stroke="#C9A227" strokeWidth="1.8" />
                         <line x1="16" y1="16" x2="21" y2="21" stroke="#C9A227" strokeWidth="1.8" strokeLinecap="round" />
@@ -561,8 +603,8 @@ export default function RealisationsGridSection() {
                   : aspectMap[p.size] || "4/3",
               };
 
-              // SMMA → bouton qui ouvre le lightbox
-              if (isSocialMedia) {
+              // ✅ SMMA + Photographie → bouton qui ouvre le lightbox
+              if (opensLightbox) {
                 return (
                   <button
                     key={p.id}
@@ -602,7 +644,7 @@ export default function RealisationsGridSection() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          LIGHTBOX MODAL — pour Social Media Marketing
+          LIGHTBOX MODAL — SMMA + Photographie
           ═══════════════════════════════════════════ */}
       {lightbox && current && (
         <div
@@ -613,7 +655,6 @@ export default function RealisationsGridSection() {
           }}
           onClick={closeLightbox}
         >
-          {/* Bouton fermer */}
           <button
             type="button"
             onClick={closeLightbox}
@@ -636,16 +677,14 @@ export default function RealisationsGridSection() {
             </svg>
           </button>
 
-          {/* Compteur */}
           <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20 flex items-center gap-3">
             <span className="font-display text-[11px] md:text-[12px] tracking-[0.25em] uppercase text-[#C9A227]">
-              {String(lightbox.index + 1).padStart(2, "0")} / {String(smmaProjects.length).padStart(2, "0")}
+              {String(lightbox.index + 1).padStart(2, "0")} / {String(lightboxProjects.length).padStart(2, "0")}
             </span>
             <div className="w-12 h-[1px] bg-[#C9A227]/50" />
           </div>
 
-          {/* Flèche gauche */}
-          {smmaProjects.length > 1 && (
+          {lightboxProjects.length > 1 && (
             <button
               type="button"
               onClick={(e) => {
@@ -673,8 +712,7 @@ export default function RealisationsGridSection() {
             </button>
           )}
 
-          {/* Flèche droite */}
-          {smmaProjects.length > 1 && (
+          {lightboxProjects.length > 1 && (
             <button
               type="button"
               onClick={(e) => {
@@ -702,7 +740,6 @@ export default function RealisationsGridSection() {
             </button>
           )}
 
-          {/* Image centrale */}
           <div
             className="relative max-w-[90vw] max-h-[85vh] w-auto h-auto flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
@@ -717,14 +754,12 @@ export default function RealisationsGridSection() {
               priority
             />
 
-            {/* Coins décoratifs dorés */}
             <span className="absolute -top-2 -left-2 w-6 h-[1px] bg-[#C9A227]" />
             <span className="absolute -top-2 -left-2 w-[1px] h-6 bg-[#C9A227]" />
             <span className="absolute -bottom-2 -right-2 w-6 h-[1px] bg-[#C9A227]" />
             <span className="absolute -bottom-2 -right-2 w-[1px] h-6 bg-[#C9A227]" />
           </div>
 
-          {/* Titre + description en bas */}
           <div className="absolute bottom-4 md:bottom-8 left-0 right-0 flex justify-center px-4 pointer-events-none">
             <div className="max-w-[600px] text-center">
               <p className="font-display text-[10px] md:text-[11px] tracking-[0.25em] uppercase text-[#C9A227] mb-2">

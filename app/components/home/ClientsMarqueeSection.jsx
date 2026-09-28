@@ -42,7 +42,7 @@ export default function ClientsMarqueeSection() {
   }, []);
 
   return (
-    <section className="clients-marquee relative overflow-hidden border-t border-b border-[rgba(201,162,39,0.1)] bg-black py-20 md:py-28 lg:py-32">
+    <section className="clients-marquee relative overflow-hidden border-t border-b border-[rgba(201,162,39,0.1)] bg-black py-10 md:py-18 lg:py-22">
       {/* Label supérieur */}
       <div className="mx-auto mb-10 max-w-[1400px] px-6 md:px-10 md:mb-14">
         <div className="flex items-center gap-3 mb-6 md:mb-8">
@@ -70,7 +70,7 @@ export default function ClientsMarqueeSection() {
                 className="group flex shrink-0 items-center justify-center px-6 md:px-7"
               >
                 {/* Logos agrandis */}
-                <div className="relative flex h-40 w-[360px] items-center justify-center opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 md:h-68 md:w-[420px]">
+                <div className="relative flex h-40 w-[360px] items-center justify-center opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 md:h-48 md:w-[220px]">
                   <Image
                     src={client.logo}
                     alt={client.name}

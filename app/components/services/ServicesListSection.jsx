@@ -147,7 +147,7 @@ function RevealImage({ children, delay = 0, duration = 1400 }) {
   return (
     <div
       ref={ref}
-      className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
+      className="transition-all ease-[cubic-bezier(0.16,1,0.3,1)] h-full"
       style={{
         transitionDuration: `${duration}ms`,
         transitionDelay: `${delay}ms`,
@@ -247,9 +247,10 @@ export default function ServicesListSection() {
             )}
 
             <div className="relative max-w-[1400px] mx-auto px-6 md:px-10">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+              {/* ✅ items-stretch pour que les 2 colonnes aient la même hauteur */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-stretch">
                 {/* ═══════════════════════════════════════════
-                    COLONNE IMAGE
+                    COLONNE IMAGE — hauteur alignée sur la colonne texte
                     ═══════════════════════════════════════════ */}
                 <div
                   className={`lg:col-span-6 ${
@@ -257,7 +258,8 @@ export default function ServicesListSection() {
                   } order-1`}
                 >
                   <RevealImage delay={100} duration={1400}>
-                    <div className="group/img relative overflow-hidden aspect-[16/9] border border-[rgba(201,162,39,0.15)] hover:border-[rgba(201,162,39,0.4)] transition-colors duration-500">
+                    {/* ✅ min-h adaptatif : l'image prend toute la hauteur dispo */}
+                    <div className="group/img relative overflow-hidden border border-[rgba(201,162,39,0.15)] hover:border-[rgba(201,162,39,0.4)] transition-colors duration-500 h-full min-h-[320px] sm:min-h-[400px] lg:min-h-[520px] xl:min-h-[560px]">
                       <Image
                         src={service.img}
                         alt={service.title}
@@ -315,7 +317,7 @@ export default function ServicesListSection() {
                     COLONNE TEXTE — slide depuis le côté opposé
                     ═══════════════════════════════════════════ */}
                 <div
-                  className={`lg:col-span-6 ${
+                  className={`lg:col-span-6 flex flex-col justify-center ${
                     isEven ? "lg:order-1" : "lg:order-2"
                   } order-2`}
                 >
