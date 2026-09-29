@@ -60,24 +60,33 @@ export default function ClientsMarqueeSection() {
 
         <div className="marquee-viewport overflow-hidden">
           <div
-            className={`marquee-track flex w-max items-center ${
+            className={`marquee-track flex w-max items-center py-4 ${
               reducedMotion ? "" : "animate-marquee"
             }`}
           >
             {track.map((client, index) => (
               <div
                 key={`${client.name}-${index}`}
-                className="group flex shrink-0 items-center justify-center px-6 md:px-7"
+                className="group shrink-0 px-3 md:px-4"
               >
-                {/* Logos agrandis */}
-                <div className="relative flex h-40 w-[360px] items-center justify-center opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 md:h-48 md:w-[220px]">
-                  <Image
-                    src={client.logo}
-                    alt={client.name}
-                    fill
-                    sizes="420px"
-                    className="object-contain"
-                  />
+                {/* Carte "partenaire" : fond blanc, ombre, effet hover subtil */}
+                <div className="relative bg-white rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(201,162,39,0.25)]">
+                  {/* Coins dorés décoratifs */}
+                  <span className="absolute top-2 left-2 w-3 h-[1px] bg-[#C9A227]/40 transition-all duration-500 group-hover:w-4 group-hover:bg-[#C9A227]" />
+                  <span className="absolute top-2 left-2 w-[1px] h-3 bg-[#C9A227]/40 transition-all duration-500 group-hover:h-4 group-hover:bg-[#C9A227]" />
+                  <span className="absolute bottom-2 right-2 w-3 h-[1px] bg-[#C9A227]/40 transition-all duration-500 group-hover:w-4 group-hover:bg-[#C9A227]" />
+                  <span className="absolute bottom-2 right-2 w-[1px] h-3 bg-[#C9A227]/40 transition-all duration-500 group-hover:h-4 group-hover:bg-[#C9A227]" />
+
+                  {/* Conteneur du logo */}
+                  <div className="relative w-28 h-28 md:w-32 md:h-32 p-4">
+                    <Image
+                      src={client.logo}
+                      alt={client.name}
+                      fill
+                      sizes="(max-width: 768px) 112px, 128px"
+                      className="object-contain p-3 transition-all duration-500 group-hover:scale-105"
+                    />
+                  </div>
                 </div>
               </div>
             ))}
@@ -87,8 +96,13 @@ export default function ClientsMarqueeSection() {
 
       <style jsx global>{`
         .animate-marquee {
-          animation: clients-marquee-scroll 32s linear infinite;
+          animation: clients-marquee-scroll 40s linear infinite;
         }
+
+        /* Pause au survol global (facultatif mais agréable) */
+        {/* .clients-marquee:hover .animate-marquee {
+          animation-play-state: paused;
+        } */}
 
         @keyframes clients-marquee-scroll {
           from {
